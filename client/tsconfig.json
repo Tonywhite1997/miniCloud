@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true, // Enables interoperability with CommonJS modules
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true, // Enforces consistent file casing (important for case-sensitive filesystems)
+    "noEmit": true, // Ensures TypeScript doesn't emit output files
+    "isolatedModules": true, // Helps catch errors when working with single files
+    "resolveJsonModule": true, // Allows importing JSON files as modules
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true, // Allows default imports from modules using 'export ='
+    "useDefineForClassFields": true, // Supports class field declarations
+    "moduleResolution": "node", // Preferred module resolution strategy
+    "skipDefaultLibCheck": true, // Skips checking of the default library declarations (if using a bundler)
+    "rootDir": "./src", // Set this to your source code directory
+    "outDir": "./build" // Set this to your output directory
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules"]
+}

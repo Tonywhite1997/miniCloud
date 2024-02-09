@@ -1,0 +1,7 @@
+@import "./defaultStyles.scss";
+
+.footer{
+    // border: 1px solid red;
+    height: 10vh;
+    @include flex(row);
+}

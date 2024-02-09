@@ -1,0 +1,59 @@
+.user-details-section {
+    // border: 1px solid red;
+    background-color: rgb(236, 236, 236);
+    @include flex(column);
+    justify-content: flex-start;
+    width: 60%;
+    height: 100%;
+    gap: .5em;
+    padding-block: 2em;
+
+    .space-details {
+        // border: 1px solid red;
+        @include flex(column);
+        gap: .3em;
+        align-items: flex-start;
+        margin-top: 2em;
+
+        p {
+            color: rgb(128, 126, 126);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+        }
+
+        .allocated,
+        .used,
+        .free {
+            @include flex(row);
+            gap: .2em;
+            justify-content: flex-start;
+        }
+
+        .bar {
+            width: 12px;
+            height: 20px;
+            background-color: black;
+        }
+
+        .allocated .bar {
+            background-color: green;
+        }
+
+        .used .bar {
+            border: 1px solid red;
+            background-color: red;
+        }
+    }
+}
+
+@media screen and (max-width:1000px) {
+    .user-details-section {
+        width: 80%;
+    }
+}
+
+@media screen and(max-width:750px) {
+    .user-details-section {
+        width: 100%;
+    }
+}

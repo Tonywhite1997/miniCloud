@@ -1,0 +1,88 @@
+.delete-account-container {
+    // border: 1px solid red;
+    @include flex(column);
+    gap: 1em;
+    padding: 0 .5em;
+    margin-top: 2em;
+
+    .warning {
+        text-align: center;
+    }
+
+    .password-field {
+        @include flex(column);
+        gap: .5em;
+
+        label {
+            color: rgb(223, 60, 60);
+            font-size: .9rem;
+            text-align: center;
+        }
+
+        input {
+            height: 30px;
+            width: 250px;
+            border-radius: .2em;
+            text-indent: .5em;
+        }
+    }
+
+    .success-message {
+        background-color: green;
+        color: white;
+        font-size: .8rem;
+        padding: .1em .5em;
+        border-radius: .2em;
+        margin-bottom: 2em;
+    }
+
+    .error-msg {
+        text-align: center;
+        color: rgb(217, 53, 53);
+    }
+
+    .buttons {
+        width: 250px;
+        // border: 1px solid red;
+        @include flex(row);
+        justify-content: center;
+        gap: .5em;
+        padding: .3em 0;
+
+        button {
+            @include flex(row);
+            width: 70px;
+            padding: .3em 0;
+            border-radius: .2em;
+            cursor: pointer;
+        }
+
+        .delete-account-link {
+            text-decoration: none;
+            color: black;
+        }
+
+        .delete-btn {
+            color: white;
+            background: linear-gradient(to right, rgb(9, 98, 9), rgb(162, 13, 13));
+
+        }
+    }
+}
+
+@media screen and (max-width:350px) {
+    .user-details-backdrop {
+
+        .delete-account-container {
+            width: 100%;
+
+            .password-field {
+                width: 100%;
+
+                input {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

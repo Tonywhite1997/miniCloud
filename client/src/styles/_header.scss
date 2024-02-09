@@ -1,0 +1,49 @@
+@mixin flex($direction) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $direction;
+}
+
+.header {
+    @include flex(row);
+    justify-content: space-between;
+    padding: 0 2em;
+    min-height: 12%;
+    // border: 1px solid red;
+
+
+    &-logo {
+        width: fit-content;
+        @include flex(column);
+        padding: .2em .2em;
+        font-weight: 600;
+
+        .logo-link {
+            // border: 1px solid red;
+            @include flex(column);
+            color: rgb(101, 101, 101);
+            text-decoration: none;
+        }
+
+        .cloud-icon {
+            height: 30px;
+            width: 30px;
+        }
+    }
+
+    .logout-btn {
+        font-size: .9rem;
+        border: 1px dotted rgb(28, 105, 28);
+        padding: .2em .5em;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+}
+
+@media screen and (max-width:"650px") {
+    .header {
+        padding: .5em;
+    }
+}
