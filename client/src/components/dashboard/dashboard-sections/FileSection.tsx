@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext, ChangeEvent } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios, { AxiosResponse } from "axios";
-import prettyBytes from "pretty-bytes";
 import CreateFolderIcon from "../../../assets/CreateFolderIcon";
 import FolderIcon from "../../../assets/FolderIcon";
 import UploadIcon from "../../../assets/UploadIcon";
@@ -18,6 +17,9 @@ import { returnToLoginPage } from "../../../utils/generalCommands/ReturnToLoginP
 import SmallLoader from "../../../UI/SmallLoader";
 import RenameFile from "../RenameFile";
 import RenameFolderFile from "../RenameFolderFile";
+import FileTSX from "./components/FileTSX";
+import FolderFileJSX from "./components/FolderFileTSX";
+import FolderTSX from "./components/FolderTSX";
 
 function FileSection() {
   const [isNewFolder, setIsNewFolder] = useState(false);
@@ -426,6 +428,27 @@ function FileSection() {
     setIsFolderFileOption,
   };
 
+  const fileStructureProps = {
+    files,
+    multipleFilesSelected,
+    selectingMultipleFilesToDelete,
+    openFileOptions,
+  };
+
+  const folderFileStructureProps = {
+    folderFiles,
+    selectingMultipleFilesToDelete,
+    openFolderFileOptions,
+    multipleFilesSelected,
+  };
+
+  const folderStructureProps = {
+    folders,
+    setFolderToLoad,
+    multipleFilesSelected,
+    openFolderOptions,
+  };
+
   return (
     // <main className="dashboard">
     <div className="file-section-container">
@@ -535,6 +558,7 @@ function FileSection() {
           Error: Try again later
         </p>
       )}
+
       <section className="folder-tracker">
         <p className="current-folder">{`dashboard/${currentFolderDetails.name}`}</p>
         {currentFolderDetails.name && (
@@ -543,195 +567,53 @@ function FileSection() {
           </p>
         )}
       </section>
-      <section className="search-file-container">
-        <label htmlFor="search">Search file</label>
-        <div>
-          <input
-            type="text"
-            id="search"
-            placeholder="search term"
-            // value={searchTerm}
-            // onChange={(e) => {
-            //   setSearchTerm(e.target.value);
-            // }}
-            // onKeyUp={findSearchedFile}
-          />
-        </div>
+
+      <section
+        style={{ overflow: isFileScrollHidden ? "hidden" : "scroll" }}
+        className="dashboard-file-section"
+      >
+        {isFetchingFiles && isFetchingFolders && <Loader />}
+        {user._id &&
+          !folders?.length &&
+          !files?.length &&
+          !isFetchingFiles &&
+          !isFetchingFolders && (
+            <p className="empty-dashboard-text">
+              {user?.isVerified
+                ? "Nothing to see here. Get started by uploading files or creating folder"
+                : "Please verify your email to continue"}
+            </p>
+          )}
+        {!currentFolderDetails.name &&
+          !isFetchingFiles &&
+          !isFetchingFolders &&
+          folders && <FolderTSX folderStructureProps={folderStructureProps} />}
+        {isFetchingFiles || (isFetchingFolders && <Loader />)}
+        {!currentFolderDetails.name &&
+          !isFetchingFiles &&
+          !isFetchingFolders &&
+          files && <FileTSX fileStructureProps={fileStructureProps} />}
+
+        {currentFolderDetails.name && isFetchingSelectedFolderFiles && (
+          <Loader />
+        )}
+
+        {!isFetchingSelectedFolderFiles &&
+          currentFolderDetails.name &&
+          folderFiles.length === 0 &&
+          !error.isError && (
+            <p className="empty-folder-text">Folder is empty</p>
+          )}
+
+        {currentFolderDetails.name && error.isError && (
+          <p className="folder-file-error">{error.error}</p>
+        )}
+
+        {currentFolderDetails.name && (
+          <FolderFileJSX folderFileStructureProps={folderFileStructureProps} />
+        )}
       </section>
-      {
-        <section
-          style={{ overflow: isFileScrollHidden ? "hidden" : "scroll" }}
-          className="dashboard-file-section"
-        >
-          {isFetchingFiles && isFetchingFolders && <Loader />}
-          {user._id &&
-            !folders?.length &&
-            !files?.length &&
-            !isFetchingFiles &&
-            !isFetchingFolders && (
-              <p className="empty-dashboard-text">
-                {user?.isVerified
-                  ? "Nothing to see here. Get started by uploading files or creating folder"
-                  : "Please verify your email to continue"}
-              </p>
-            )}
-          {!currentFolderDetails.name &&
-            !isFetchingFiles &&
-            !isFetchingFolders &&
-            folders &&
-            folders.map((folder: FOLDER) => {
-              return (
-                <div className="folder-container" key={folder._id}>
-                  <div
-                    className="folder"
-                    onClick={() => {
-                      setFolderToLoad(folder);
-                    }}
-                  >
-                    <div className="folder-icon-container">
-                      <FolderIcon />
-                    </div>
-                    <p className="folder-name">{folder.name}</p>
-                  </div>
-                  {!multipleFilesSelected.length && (
-                    <span
-                      className="folder-options-button"
-                      onClick={() => openFolderOptions(folder)}
-                    >
-                      &#8942;
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          {isFetchingFiles || (isFetchingFolders && <Loader />)}
-          {!currentFolderDetails.name &&
-            !isFetchingFiles &&
-            !isFetchingFolders &&
-            files &&
-            files.map((file: FILE) => {
-              return (
-                <div className="file-container" key={file._id}>
-                  <div
-                    className="file"
-                    style={{
-                      backgroundColor: multipleFilesSelected.some(
-                        (fileData) => fileData.fileID === file._id
-                      )
-                        ? "rgb(69, 68, 68)"
-                        : "initial",
-
-                      color: multipleFilesSelected.some(
-                        (fileData) => fileData.fileID === file._id
-                      )
-                        ? "white"
-                        : "initial",
-                    }}
-                    onClick={() => {
-                      selectingMultipleFilesToDelete(file);
-                    }}
-                  >
-                    <div className="file-type">
-                      <p>
-                        {file.mimetype.split("/")[1].length > 4
-                          ? file.fileName.split(".").slice(-1)
-                          : file.mimetype.split("/")[1]}
-                      </p>
-                    </div>
-                    <div className="file-details">
-                      <p className="file-name">{file.fileName}</p>
-                      <p>
-                        {prettyBytes(file.size, {
-                          space: false,
-                          maximumFractionDigits: 0,
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                  {!multipleFilesSelected.length && (
-                    <span
-                      className="file-options-button"
-                      onClick={() => {
-                        openFileOptions(file);
-                      }}
-                    >
-                      &#8942;
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-
-          {currentFolderDetails.name && isFetchingSelectedFolderFiles && (
-            <Loader />
-          )}
-
-          {!isFetchingSelectedFolderFiles &&
-            currentFolderDetails.name &&
-            folderFiles.length === 0 &&
-            !error.isError && (
-              <p className="empty-folder-text">Folder is empty</p>
-            )}
-
-          {currentFolderDetails.name && error.isError && (
-            <p className="folder-file-error">{error.error}</p>
-          )}
-
-          {currentFolderDetails.name &&
-            folderFiles.map((file: FILE) => {
-              return (
-                <div className="file-container" key={file._id}>
-                  <div
-                    className="file"
-                    style={{
-                      backgroundColor: multipleFilesSelected.some(
-                        (fileData) => fileData.fileID === file._id
-                      )
-                        ? "rgb(69, 68, 68)"
-                        : "initial",
-
-                      color: multipleFilesSelected.some(
-                        (fileData) => fileData.fileID === file._id
-                      )
-                        ? "white"
-                        : "initial",
-                    }}
-                    onClick={() => {
-                      selectingMultipleFilesToDelete(file);
-                    }}
-                  >
-                    <div className="file-type">
-                      <p>
-                        {file.mimetype.split("/")[1].length > 4
-                          ? file.fileName.split(".").slice(-1)
-                          : file.mimetype.split("/")[1]}
-                      </p>
-                    </div>
-                    <div className="file-details">
-                      <p className="file-name">{file.fileName}</p>
-                      <p>
-                        {prettyBytes(file.size, {
-                          space: false,
-                          maximumFractionDigits: 0,
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                  {!multipleFilesSelected.length && (
-                    <span
-                      className="file-options-button"
-                      onClick={() => openFolderFileOptions(file)}
-                    >
-                      &#8942;
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-        </section>
-      }
     </div>
-    // </main>
   );
 }
 

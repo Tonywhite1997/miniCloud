@@ -195,8 +195,8 @@ exports.moveFileToFolder = catchAsync(
       );
     }
 
-    if (currentFolderID) {
-      files = await File.find({ folder: currentFolderID, user: req.user._id });
+    if (file.folder) {
+      files = await File.find({ folder: file.folder, user: req.user._id });
     } else {
       files = await File.find({ folder: null, user: req.user._id });
     }
@@ -316,7 +316,7 @@ exports.deleteMultipleFiles = catchAsync(
 
 exports.getCurrentUserFiles = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const files = await File.find({ user: req.user._id, folder: undefined });
+    const files = await File.find({ user: req.user._id });
     res.status(200).json({
       status: "ok",
       files,
