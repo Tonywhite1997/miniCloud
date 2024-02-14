@@ -14,6 +14,7 @@ import ResetPassword from "./components/authentication/ResetPassword";
 import VerifyAccount from "./components/authentication/emailVerification/VerifyAccount";
 import ChangePassword from "./components/authentication/ChangePassword";
 import DeleteAccount from "./components/authentication/DeleteAccount";
+import ShareFile from "./components/dashboard/ShareFile";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,12 @@ function App() {
                 path="/auth/forgot-password"
                 element={<ForgotPassword />}
               />
+
+              <Route
+                path="/file/share-file/:fileID/:filename"
+                element={<ShareFile />}
+              />
+
               <Route
                 path="/auth/change-password"
                 element={<ChangePassword />}

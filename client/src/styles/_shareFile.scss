@@ -1,0 +1,74 @@
+.share-file {
+    // border: 1px solid red;
+    @include flex(column);
+    gap: 1em;
+    padding: 0 1em;
+
+    button {
+        width: 80px;
+        padding: .3em;
+        // font-weight: 600;/
+        background: linear-gradient(to right, rgb(92, 29, 29), rgb(20, 70, 20));
+        color: white;
+        border-radius: .3em;
+        transition: color 200ms ease-in;
+    }
+
+    p,
+    label,
+    h3 {
+        text-align: center
+    }
+
+    .filename {
+        color: rgb(10, 138, 10);
+        font-size: 1.1rem;
+    }
+
+    .recipient {
+        @include flex(column);
+        gap: .2em;
+
+        input {
+            height: 35px;
+            width: 250px;
+            border-radius: .3em;
+            text-indent: .5em;
+            margin-bottom: 1em;
+        }
+    }
+
+    .action-label {
+        // border: 1px solid red;
+        margin-bottom: -.8em;
+        margin-top: 2em;
+    }
+
+    .accesses {
+        // border: 1px solid red;
+        width: 250px;
+        @include flex(column);
+        align-items: flex-start;
+        gap: .2em;
+
+        .action {
+            @include flex(row);
+            gap: .1em;
+            color: rgb(88, 86, 86)
+        }
+    }
+
+    .buttons {
+        // border: 1px solid red;
+        width: 250px;
+        @include flex(row);
+        gap: .5em;
+
+        .back {
+            text-decoration: none;
+            @extend button;
+            font-size: .82rem;
+            @include flex(row);
+        }
+    }
+}

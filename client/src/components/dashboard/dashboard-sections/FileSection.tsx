@@ -20,11 +20,13 @@ import RenameFolderFile from "../RenameFolderFile";
 import FileTSX from "./components/FileTSX";
 import FolderFileJSX from "./components/FolderFileTSX";
 import FolderTSX from "./components/FolderTSX";
+import ShareFile from "../ShareFile";
 
 function FileSection() {
   const [isNewFolder, setIsNewFolder] = useState(false);
   const [isRenamingFile, setIsRenamingFile] = useState(false);
   const [isRenamingFolderFile, setIsRenamingFolderFile] = useState(false);
+  const [isSharingFile, setIsSharingFile] = useState<boolean>(false);
   const [isMoveOpen, setIsMoveOpen] = useState(false);
   const [folders, setFolders] = useState([]);
   const [isFolderOption, setIsFolderOption] = useState(false);

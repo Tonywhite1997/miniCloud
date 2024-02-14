@@ -180,7 +180,7 @@
   margin-bottom: 1em;
 }
 
-.signup-section .form .button button {
+.signup-section .form .button button, .signup-section .form .button .share-file .buttons .back, .share-file .buttons .signup-section .form .button .back {
   width: 90px;
   padding: .5em 1.25em;
   font-weight: 600;
@@ -196,12 +196,12 @@
   transition: background-color 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
 }
 
-.signup-section .form .button button:hover {
+.signup-section .form .button button:hover, .signup-section .form .button .share-file .buttons .back:hover, .share-file .buttons .signup-section .form .button .back:hover {
   -webkit-transform: scale(1.1);
           transform: scale(1.1);
 }
 
-.signup-section .form .button button:active {
+.signup-section .form .button button:active, .signup-section .form .button .share-file .buttons .back:active, .share-file .buttons .signup-section .form .button .back:active {
   -webkit-transform: scale(0.9);
           transform: scale(0.9);
 }
@@ -317,7 +317,7 @@
   margin-bottom: 1em;
 }
 
-.login-section .form .button button {
+.login-section .form .button button, .login-section .form .button .share-file .buttons .back, .share-file .buttons .login-section .form .button .back {
   padding: .5em 1.25em;
   font-weight: 600;
   border: none;
@@ -333,12 +333,12 @@
   width: 100px;
 }
 
-.login-section .form .button button:hover {
+.login-section .form .button button:hover, .login-section .form .button .share-file .buttons .back:hover, .share-file .buttons .login-section .form .button .back:hover {
   -webkit-transform: scale(1.1);
           transform: scale(1.1);
 }
 
-.login-section .form .button button:active {
+.login-section .form .button button:active, .login-section .form .button .share-file .buttons .back:active, .share-file .buttons .login-section .form .button .back:active {
   -webkit-transform: scale(0.9);
           transform: scale(0.9);
 }
@@ -507,7 +507,6 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding-bottom: 1em;
   z-index: 1;
   background-color: rgba(128, 128, 128, 0.34);
 }
@@ -518,7 +517,7 @@
   padding: .5em 1em;
   padding-top: 2em;
   z-index: 2;
-  height: 50%;
+  height: 60%;
   overflow-y: scroll;
   background-color: #454444;
   color: white;
@@ -603,6 +602,8 @@
 .dashboard .dashboard-action-section .backdrop .folder-options-remove, .dashboard .dashboard-action-section .file-section-container .loader-backdrop .folder-options-remove,
 .dashboard .dashboard-action-section .backdrop .folder-options-rename,
 .dashboard .dashboard-action-section .file-section-container .loader-backdrop .folder-options-rename,
+.dashboard .dashboard-action-section .backdrop .folder-options-share,
+.dashboard .dashboard-action-section .file-section-container .loader-backdrop .folder-options-share,
 .dashboard .dashboard-action-section .backdrop .file-options-download,
 .dashboard .dashboard-action-section .file-section-container .loader-backdrop .file-options-download,
 .dashboard .dashboard-action-section .backdrop .file-options-view,
@@ -630,9 +631,10 @@
   -ms-flex-line-pack: center;
       align-content: center;
   gap: .5em;
-  margin-bottom: .1em;
+  margin-bottom: .5em;
   padding: .2em 0;
   cursor: pointer;
+  text-decoration: none;
 }
 
 
@@ -658,6 +660,8 @@
 .dashboard .dashboard-action-section .file-section-container .loader-backdrop .move-icon,
 .dashboard .dashboard-action-section .backdrop .view-icon,
 .dashboard .dashboard-action-section .file-section-container .loader-backdrop .view-icon,
+.dashboard .dashboard-action-section .backdrop .share-icon,
+.dashboard .dashboard-action-section .file-section-container .loader-backdrop .share-icon,
 .dashboard .dashboard-action-section .backdrop .icon,
 .dashboard .dashboard-action-section .file-section-container .loader-backdrop .icon {
   width: 20px;
@@ -878,7 +882,7 @@
   width: 100%;
 }
 
-.dashboard .dashboard-action-section .file-section-container .folder-name-container .move-buttons button {
+.dashboard .dashboard-action-section .file-section-container .folder-name-container .move-buttons button, .dashboard .dashboard-action-section .file-section-container .folder-name-container .move-buttons .share-file .buttons .back, .share-file .buttons .dashboard .dashboard-action-section .file-section-container .folder-name-container .move-buttons .back {
   width: 100px;
   padding: .5em 2em;
   font-weight: 600;
@@ -890,7 +894,7 @@
   transition: color 200ms ease-in;
 }
 
-.dashboard .dashboard-action-section .file-section-container .folder-name-container .move-buttons button:hover {
+.dashboard .dashboard-action-section .file-section-container .folder-name-container .move-buttons button:hover, .dashboard .dashboard-action-section .file-section-container .folder-name-container .move-buttons .share-file .buttons .back:hover, .share-file .buttons .dashboard .dashboard-action-section .file-section-container .folder-name-container .move-buttons .back:hover {
   background: -webkit-gradient(linear, left top, right top, from(white));
   background: linear-gradient(to right, white);
   color: black;
@@ -1396,7 +1400,7 @@
   padding: .5em 0;
 }
 
-.folder-backdrop .new-folder .button button {
+.folder-backdrop .new-folder .button button, .folder-backdrop .new-folder .button .share-file .buttons .back, .share-file .buttons .folder-backdrop .new-folder .button .back {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1452,7 +1456,7 @@
   .folder-backdrop .new-folder .button {
     width: 200px;
   }
-  .folder-backdrop .new-folder .button button {
+  .folder-backdrop .new-folder .button button, .folder-backdrop .new-folder .button .share-file .buttons .back, .share-file .buttons .folder-backdrop .new-folder .button .back {
     padding: .5em 1em;
   }
 }
@@ -1785,7 +1789,7 @@
   padding: .3em 0;
 }
 
-.change-password-container .buttons button {
+.change-password-container .buttons button, .change-password-container .share-file .buttons .back, .share-file .change-password-container .buttons .back {
   width: 70px;
   padding: .3em 0;
   border-radius: .2em;
@@ -1925,7 +1929,7 @@
   padding: .3em 0;
 }
 
-.delete-account-container .buttons button {
+.delete-account-container .buttons button, .delete-account-container .share-file .buttons .back, .share-file .delete-account-container .buttons .back {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2000,7 +2004,7 @@
   margin-bottom: 1em;
 }
 
-.forgot-password-page button {
+.forgot-password-page button, .forgot-password-page .share-file .buttons .back, .share-file .buttons .forgot-password-page .back {
   width: 80px;
   padding: .5em 0;
   background: -webkit-gradient(linear, left top, right top, from(#0b790b), to(#880505));
@@ -2084,6 +2088,151 @@
   }
 }
 
+.share-file {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 1em;
+  padding: 0 1em;
+}
+
+.share-file button, .share-file .buttons .back {
+  width: 80px;
+  padding: .3em;
+  background: -webkit-gradient(linear, left top, right top, from(#5c1d1d), to(#144614));
+  background: linear-gradient(to right, #5c1d1d, #144614);
+  color: white;
+  border-radius: .3em;
+  -webkit-transition: color 200ms ease-in;
+  transition: color 200ms ease-in;
+}
+
+.share-file p,
+.share-file label,
+.share-file h3 {
+  text-align: center;
+}
+
+.share-file .filename {
+  color: #0a8a0a;
+  font-size: 1.1rem;
+}
+
+.share-file .recipient {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: .2em;
+}
+
+.share-file .recipient input {
+  height: 35px;
+  width: 250px;
+  border-radius: .3em;
+  text-indent: .5em;
+  margin-bottom: 1em;
+}
+
+.share-file .action-label {
+  margin-bottom: -.8em;
+  margin-top: 2em;
+}
+
+.share-file .accesses {
+  width: 250px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  gap: .2em;
+}
+
+.share-file .accesses .action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: .1em;
+  color: #585656;
+}
+
+.share-file .buttons {
+  width: 250px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: .5em;
+}
+
+.share-file .buttons .back {
+  text-decoration: none;
+  font-size: .82rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
 * {
   margin: 0px;
   padding: 0px;
@@ -2103,7 +2252,7 @@ body {
   height: 100%;
 }
 
-#root button {
+#root button, #root .share-file .buttons .back, .share-file .buttons #root .back {
   cursor: pointer;
 }
 /*# sourceMappingURL=root.css.map */

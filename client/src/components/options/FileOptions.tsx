@@ -15,6 +15,7 @@ import { fileContext } from "../../utils/context";
 import { downloadFileSetup } from "../../utils/downloadSetup";
 import SmallLoader from "../../UI/SmallLoader";
 import { returnToLoginPage } from "../../utils/generalCommands/ReturnToLoginPage";
+import ShareIcon from "../../assets/ShareIcon";
 
 function FileOptions({ fileOptionsProps }) {
   const {
@@ -126,6 +127,14 @@ function FileOptions({ fileOptionsProps }) {
           <RenameIcon />
           <p>Rename</p>
         </div>
+
+        <Link
+          to={`/file/share-file/${selectedFile.id}/${selectedFile.name}`}
+          className="folder-options-share"
+        >
+          <ShareIcon />
+          <p>Share</p>
+        </Link>
 
         <div className="folder-options-move" onClick={openMoveFileBox}>
           <MoveIcon />
