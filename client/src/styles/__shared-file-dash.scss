@@ -1,0 +1,79 @@
+.shared-file-dash {
+    // border: 1px solid red;
+    @include flex(column);
+    justify-content: flex-start;
+    padding: 1em 2em;
+
+    h2 {
+        // border: 1px solid red;
+        margin-bottom: .2em;
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+        color: black;
+    }
+
+    .folder-icon {
+        // border: 1px solid red;
+        width: 50px;
+        height: 50px;
+        color: rgb(75, 75, 75);
+    }
+
+    .your-files,
+    .your-borrowed-files {
+        // border: 1px solid red;
+        width: 100%;
+        margin-bottom: 3em;
+
+        .files-container {
+            // border: 1px solid red;
+            width: 100%;
+            @include flex(row);
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1em;
+
+            .file {
+                width: 120px;
+                height: auto;
+                background-color: rgb(240, 240, 240);
+                padding: 1em .5em;
+                border-radius: .2em;
+                cursor: pointer;
+
+                text-decoration: none;
+
+                .file-name {
+                    // border: 1px solid red;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    font-size: .8rem;
+                }
+
+                .email {
+                    // border: 1px solid red;
+                    font-size: .8rem;
+                    width: 100%;
+                    word-wrap: break-word;
+                    color: rgb(7, 132, 7);
+                }
+
+                .folder-icon-container {
+                    // border: 1px solid red;
+                    @include flex(row);
+
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width:600px) {
+    .shared-file-dash {
+        padding: 1em .5em;
+    }
+}

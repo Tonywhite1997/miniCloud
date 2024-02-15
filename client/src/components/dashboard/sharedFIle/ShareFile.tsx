@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import SmallLoader from "../../UI/SmallLoader";
-import urls from "../../utils/authURL";
-import { returnToLoginPage } from "../../utils/generalCommands/ReturnToLoginPage";
+import SmallLoader from "../../../UI/SmallLoader";
+import urls from "../../../utils/authURL";
+import { returnToLoginPage } from "../../../utils/generalCommands/ReturnToLoginPage";
 
 interface SHAREDFILEDATA {
   fileID: string;
@@ -45,14 +45,14 @@ function ShareFile() {
       return;
     }
 
-    const dataPayload = { ...sharedFileData, name: filename, recipientEmail };
+    const dataPayload = { ...sharedFileData, filename, recipientEmail };
 
     try {
-      const { data } = await axios.post(`${urls.sharedFileURL}/share`, {
+      await axios.post(`${urls.sharedFileURL}/share`, {
         dataPayload,
       });
       setIsLoading(false);
-      console.log(data);
+      window.location.assign("/share-file/dashboard");
     } catch (error) {
       setIsLoading(false);
       returnToLoginPage(error);

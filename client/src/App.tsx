@@ -14,7 +14,9 @@ import ResetPassword from "./components/authentication/ResetPassword";
 import VerifyAccount from "./components/authentication/emailVerification/VerifyAccount";
 import ChangePassword from "./components/authentication/ChangePassword";
 import DeleteAccount from "./components/authentication/DeleteAccount";
-import ShareFile from "./components/dashboard/ShareFile";
+import ShareFile from "./components/dashboard/sharedFIle/ShareFile";
+import ShareFileDashboard from "./components/dashboard/sharedFIle/shareFileDashboard";
+import SharedFileDetails from "./components/dashboard/sharedFIle/SharedFileDetails";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +54,16 @@ function App() {
               <Route
                 path="/file/share-file/:fileID/:filename"
                 element={<ShareFile />}
+              />
+
+              <Route
+                path="/share-file/dashboard"
+                element={<ShareFileDashboard />}
+              />
+
+              <Route
+                path="/share-file/dashboard/:fileID"
+                element={<SharedFileDetails />}
               />
 
               <Route

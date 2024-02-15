@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import LockIcon from "../../../assets/LockIcon";
 import ProfileIcon from "../../../assets/ProfileIcon";
 import DatabaseIcon from "../../../assets/DatabaseIcon";
+import ShareIcon from "../../../assets/ShareIcon";
 
 function Navigation({ handleCurrentNav, currentNav, handleNavOpen }) {
   const databasestyle = {
@@ -43,6 +44,12 @@ function Navigation({ handleCurrentNav, currentNav, handleNavOpen }) {
           </span>
           Profile
         </li>
+        <Link to="/share-file/dashboard" className="shared-file-link link">
+          <span>
+            <ShareIcon />
+          </span>
+          Shared Files
+        </Link>
         <li className="authentication">
           <span>
             <LockIcon />

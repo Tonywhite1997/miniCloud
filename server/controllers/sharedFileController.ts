@@ -8,7 +8,6 @@ const AppError = require("../utils/appError");
 
 exports.shareFile = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    // const {recipientEmail, delete, rename,download, fileID} = req.body
     const {
       canDelete,
       canRename,
@@ -34,6 +33,14 @@ exports.shareFile = catchAsync(
 
     if (!recipient) return next(new AppError("invalid email address", 404));
 
+    const userAlreadyHasFile = await SharedFile.findOne({
+      recipient: recipient._id,
+      fileID,
+    });
+
+    if (userAlreadyHasFile)
+      return next(new AppError("user already have access to this file", 401));
+
     if (!recipient.isVerified)
       return next(
         new AppError("recipient's email has not been validated", 401)
@@ -46,7 +53,9 @@ exports.shareFile = catchAsync(
       fileID: fileID,
       name: filename,
       recipient: recipient._id,
+      recipientEmail,
       owner: req.user._id,
+      ownerEmail: req.user.email,
     };
 
     try {
@@ -54,11 +63,64 @@ exports.shareFile = catchAsync(
     } catch (error) {
       return next(new AppError(error.message, 500));
     }
-
-    const sharedFiles = await SharedFile.find({ owner: req.user._id });
     res.json({
       message: "success",
+    });
+  }
+);
+
+exports.getUserSharedFiles = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const sharedFilesData = await SharedFile.find({ owner: req.user._id });
+
+    interface FILE {
+      recipientEmail: string;
+      _id: string;
+      name: string;
+    }
+
+    let sharedFiles = [];
+
+    sharedFilesData.forEach((file: FILE) => {
+      sharedFiles.push({
+        recipientEmail: file.recipientEmail,
+        id: file._id,
+        name: file.name,
+      });
+    });
+
+    res.status(200).json({
+      message: "success",
       sharedFiles,
+    });
+  }
+);
+
+exports.getUserBorrowedFiles = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const borrowedFilesData = await SharedFile.find({
+      recipient: req.user._id,
+    });
+
+    interface FILE {
+      ownerEmail: string;
+      _id: string;
+      name: string;
+    }
+
+    let borrowedFiles = [];
+
+    borrowedFilesData.forEach((file: FILE) => {
+      borrowedFiles.push({
+        ownerEmail: file.ownerEmail,
+        id: file._id,
+        name: file.name,
+      });
+    });
+
+    res.status(200).json({
+      message: "success",
+      borrowedFiles,
     });
   }
 );

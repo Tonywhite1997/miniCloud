@@ -13,11 +13,17 @@
         color: rgb(158, 23, 23);
     }
 
+    .link {
+        text-decoration: none;
+        color: inherit;
+    }
+
     ul {
         list-style: none;
         // border: 1px solid red;
 
-        li {
+        li,
+        .shared-file-link {
             // border: 1px solid red;
             display: flex;
             align-items: center;
@@ -29,11 +35,6 @@
             // font-size: 1;
             font-weight: 500;
             color: rgb(73, 71, 71);
-
-            .link {
-                text-decoration: none;
-                color: inherit;
-            }
 
             &:hover {
                 color: rgb(158, 23, 23);

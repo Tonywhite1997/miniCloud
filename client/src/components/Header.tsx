@@ -5,6 +5,7 @@ import axios from "axios";
 import CloudIcon from "../assets/CloudIcon";
 import { userContext } from "../utils/context";
 import urls from "../utils/authURL";
+import { returnToLoginPage } from "../utils/generalCommands/ReturnToLoginPage";
 
 function Header() {
   const { user, setUser, isLoading, setIsLoading } = useContext(userContext);
@@ -21,7 +22,7 @@ function Header() {
       setIsLoading(false);
       navigate("/auth/login");
     } catch (error) {
-      console.error(error);
+      returnToLoginPage(error);
     }
   }
 

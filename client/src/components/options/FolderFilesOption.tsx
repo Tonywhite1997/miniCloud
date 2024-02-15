@@ -135,10 +135,13 @@ function FileOptions({ folderFileOptionsProps }) {
           <p>Rename</p>
         </div>
 
-        <div className="folder-options-share">
+        <Link
+          to={`/file/share-file/${selectedFolderFile.id}/${selectedFolderFile.name}`}
+          className="folder-options-share"
+        >
           <ShareIcon />
           <p>Share</p>
-        </div>
+        </Link>
 
         <div className="folder-options-move" onClick={openMoveFolderFileBox}>
           <MoveIcon />

@@ -30,7 +30,9 @@ export const UserProvider = ({ children }) => {
     }
   };
   const location = useLocation();
-  const shouldAuthCheckRun = location.pathname.includes("/user/dashboard");
+  let shouldAuthCheckRun =
+    !location.pathname.includes("/auth/login") ||
+    location.pathname.includes("/auth/register");
 
   const { isLoading: queryLoading, isFetching } = useQuery(
     "PERSIST-LOGIN-DATA",

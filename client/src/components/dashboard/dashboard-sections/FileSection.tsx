@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext, ChangeEvent } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios, { AxiosResponse } from "axios";
 import CreateFolderIcon from "../../../assets/CreateFolderIcon";
-import FolderIcon from "../../../assets/FolderIcon";
 import UploadIcon from "../../../assets/UploadIcon";
 import NewFolder from "../NewFolder";
 import MoveFile from "../moveFiles/MoveFile";
@@ -20,13 +19,12 @@ import RenameFolderFile from "../RenameFolderFile";
 import FileTSX from "./components/FileTSX";
 import FolderFileJSX from "./components/FolderFileTSX";
 import FolderTSX from "./components/FolderTSX";
-import ShareFile from "../ShareFile";
 
 function FileSection() {
   const [isNewFolder, setIsNewFolder] = useState(false);
   const [isRenamingFile, setIsRenamingFile] = useState(false);
   const [isRenamingFolderFile, setIsRenamingFolderFile] = useState(false);
-  const [isSharingFile, setIsSharingFile] = useState<boolean>(false);
+
   const [isMoveOpen, setIsMoveOpen] = useState(false);
   const [folders, setFolders] = useState([]);
   const [isFolderOption, setIsFolderOption] = useState(false);
@@ -575,7 +573,7 @@ function FileSection() {
         className="dashboard-file-section"
       >
         {isFetchingFiles && isFetchingFolders && <Loader />}
-        {user._id &&
+        {user?._id &&
           !folders?.length &&
           !files?.length &&
           !isFetchingFiles &&

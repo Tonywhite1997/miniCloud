@@ -2035,11 +2035,17 @@
   color: #9e1717;
 }
 
+.navigation .link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .navigation ul {
   list-style: none;
 }
 
-.navigation ul li {
+.navigation ul li,
+.navigation ul .shared-file-link {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2055,12 +2061,8 @@
   color: #494747;
 }
 
-.navigation ul li .link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.navigation ul li:hover {
+.navigation ul li:hover,
+.navigation ul .shared-file-link:hover {
   color: #9e1717;
 }
 
@@ -2236,6 +2238,120 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+}
+
+.shared-file-dash {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 1em 2em;
+}
+
+.shared-file-dash h2 {
+  margin-bottom: .2em;
+  text-align: center;
+}
+
+.shared-file-dash p {
+  text-align: center;
+  color: black;
+}
+
+.shared-file-dash .folder-icon {
+  width: 50px;
+  height: 50px;
+  color: #4b4b4b;
+}
+
+.shared-file-dash .your-files,
+.shared-file-dash .your-borrowed-files {
+  width: 100%;
+  margin-bottom: 3em;
+}
+
+.shared-file-dash .your-files .files-container,
+.shared-file-dash .your-borrowed-files .files-container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 1em;
+}
+
+.shared-file-dash .your-files .files-container .file,
+.shared-file-dash .your-borrowed-files .files-container .file {
+  width: 120px;
+  height: auto;
+  background-color: #f0f0f0;
+  padding: 1em .5em;
+  border-radius: .2em;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.shared-file-dash .your-files .files-container .file .file-name,
+.shared-file-dash .your-borrowed-files .files-container .file .file-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: .8rem;
+}
+
+.shared-file-dash .your-files .files-container .file .email,
+.shared-file-dash .your-borrowed-files .files-container .file .email {
+  font-size: .8rem;
+  width: 100%;
+  word-wrap: break-word;
+  color: #078407;
+}
+
+.shared-file-dash .your-files .files-container .file .folder-icon-container,
+.shared-file-dash .your-borrowed-files .files-container .file .folder-icon-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+@media screen and (max-width: 600px) {
+  .shared-file-dash {
+    padding: 1em .5em;
+  }
 }
 
 * {
