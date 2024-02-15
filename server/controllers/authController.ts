@@ -15,7 +15,7 @@ import { emailVerificationSuccessEmail } from "../email/email-verification-succe
 import { welcomeMessage } from "../email/welcome-email";
 import { generateCode } from "../utils/generateCode";
 import { verifyAccount } from "../email/verify-email";
-import { userInfo } from "os";
+
 dotenv.config();
 
 const getJWTToken = (user_id: string): string => {

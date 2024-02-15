@@ -36,6 +36,12 @@
             text-indent: .5em;
             margin-bottom: 1em;
         }
+
+        .error-msg {
+            // border: 1px solid rgb(179, 42, 42);
+            color: red;
+            margin-top: -.5em;
+        }
     }
 
     .action-label {

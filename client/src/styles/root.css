@@ -2153,6 +2153,11 @@
   margin-bottom: 1em;
 }
 
+.share-file .recipient .error-msg {
+  color: red;
+  margin-top: -.5em;
+}
+
 .share-file .action-label {
   margin-bottom: -.8em;
   margin-top: 2em;

@@ -1,12 +1,16 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import SmallLoader from "../../UI/SmallLoader";
+import urls from "../../utils/authURL";
+import { returnToLoginPage } from "../../utils/generalCommands/ReturnToLoginPage";
 
 interface SHAREDFILEDATA {
   fileID: string;
-  rename: boolean;
-  delete: boolean;
-  download: boolean;
+  canRename: boolean;
+  canDelete: boolean;
+  canDownload: boolean;
 }
 
 function ShareFile() {
@@ -14,15 +18,16 @@ function ShareFile() {
   const [recipientEmail, setRecipientEmail] = useState<string>("");
   const [sharedFileData, setSharedFileData] = useState<SHAREDFILEDATA>({
     fileID: fileID || "",
-    rename: false,
-    delete: false,
-    download: false,
+    canRename: false,
+    canDelete: false,
+    canDownload: false,
   });
 
   const [error, setError] = useState({
     isError: false,
     errorMsg: "",
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function selectUserActionsToFile(e, name: string) {
     setSharedFileData((prevData) => {
@@ -33,10 +38,25 @@ function ShareFile() {
     });
   }
 
-  function shareFile() {
+  async function shareFile() {
+    setIsLoading(true);
     if (!recipientEmail.trim()) {
       setError({ isError: true, errorMsg: "A valid email is required" });
       return;
+    }
+
+    const dataPayload = { ...sharedFileData, name: filename, recipientEmail };
+
+    try {
+      const { data } = await axios.post(`${urls.sharedFileURL}/share`, {
+        dataPayload,
+      });
+      setIsLoading(false);
+      console.log(data);
+    } catch (error) {
+      setIsLoading(false);
+      returnToLoginPage(error);
+      setError({ isError: true, errorMsg: error?.response?.data?.message });
     }
   }
 
@@ -55,7 +75,7 @@ function ShareFile() {
           value={recipientEmail}
           onChange={(e) => setRecipientEmail(e.target.value)}
         />
-        <p>{error.errorMsg}</p>
+        {error.isError && <p className="error-msg">{error.errorMsg}</p>}
       </div>
       <label className="action-label">
         Choose what this user can do with this file
@@ -64,10 +84,10 @@ function ShareFile() {
         <div className="action">
           <input
             type="checkbox"
-            name="rename"
-            checked={sharedFileData.rename}
+            name="canRename"
+            checked={sharedFileData.canRename}
             onChange={(e) => {
-              selectUserActionsToFile(e, "rename");
+              selectUserActionsToFile(e, "canRename");
             }}
           />
           <p>Rename</p>
@@ -76,10 +96,10 @@ function ShareFile() {
         <div className="action">
           <input
             type="checkbox"
-            name="delete"
-            checked={sharedFileData.delete}
+            name="canDelete"
+            checked={sharedFileData.canDelete}
             onChange={(e) => {
-              selectUserActionsToFile(e, "delete");
+              selectUserActionsToFile(e, "canDelete");
             }}
           />
           <p>Delete</p>
@@ -88,10 +108,10 @@ function ShareFile() {
         <div className="action">
           <input
             type="checkbox"
-            name="download"
-            checked={sharedFileData.download}
+            name="canDownload"
+            checked={sharedFileData.canDownload}
             onChange={(e) => {
-              selectUserActionsToFile(e, "download");
+              selectUserActionsToFile(e, "canDownload");
             }}
           />
           <p>Download</p>
@@ -101,7 +121,9 @@ function ShareFile() {
         <Link to="/user/dashboard" className="back">
           cancel
         </Link>
-        <button>share</button>
+        <button onClick={shareFile}>
+          {isLoading ? <SmallLoader /> : "share"}
+        </button>
       </div>
     </main>
   );

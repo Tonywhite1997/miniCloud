@@ -35,7 +35,7 @@ function UserDashboard() {
 
   return (
     <main className="dashboard">
-      {user._id && !isVerified && <VerifyAccountNotification />}
+      {user?._id && !isVerified && <VerifyAccountNotification />}
       {clientWidth < 650 && (
         <div className="nav-icons-container">
           <div
