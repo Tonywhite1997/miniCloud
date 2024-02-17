@@ -5,6 +5,7 @@ const File = require("../models/file");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const awsActions = require("../aws-s3-service");
 
 exports.shareFile = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -56,6 +57,8 @@ exports.shareFile = catchAsync(
       recipientEmail,
       owner: req.user._id,
       ownerEmail: req.user.email,
+      link: file.link,
+      key: file.key,
     };
 
     try {
@@ -121,6 +124,142 @@ exports.getUserBorrowedFiles = catchAsync(
     res.status(200).json({
       message: "success",
       borrowedFiles,
+    });
+  }
+);
+
+exports.getFile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { fileID } = req.params;
+    if (!fileID) return next(new AppError("file ID is required", 401));
+
+    const file = await SharedFile.findById(fileID);
+
+    if (!file) return next(new AppError("invalid file ID", 401));
+
+    res.status(200).json({
+      status: "success",
+      file,
+    });
+  }
+);
+
+exports.editRecipientPermissions = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { fileID, canDelete, canRename, canDownload } = req.body.data;
+    if (!fileID) return next(new AppError("file ID required", 401));
+
+    const file = await SharedFile.findOne({ _id: fileID, owner: req.user._id });
+
+    if (!file)
+      return next(
+        new AppError("You do not have permission to execute this command", 401)
+      );
+
+    await SharedFile.findOneAndUpdate(
+      { _id: fileID },
+      { $set: { canDelete, canDownload, canRename } },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: "success",
+    });
+  }
+);
+
+exports.revokeRecipientAccess = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { fileID } = req.body;
+
+    if (!fileID) return next(new AppError("file ID required", 401));
+
+    const file = await SharedFile.findOne({
+      _id: fileID,
+      $or: [{ owner: req.user._id }, { recipient: req.user._id }],
+    });
+
+    if (!file)
+      return next(
+        new AppError("You do not have permission to execute this command", 401)
+      );
+
+    await SharedFile.findOneAndDelete({ _id: fileID });
+
+    res.status(200).json({
+      message: "success",
+    });
+  }
+);
+
+exports.deleteSharedFile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { fileID } = req.body;
+
+    if (!fileID) return next(new AppError("file ID required", 401));
+
+    const file = await SharedFile.findOne({
+      _id: fileID,
+      recipient: req.user._id,
+    });
+
+    if (!file) return next(new AppError("file not found", 401));
+
+    if (!file.canDelete)
+      return next(
+        new AppError("You do not have permission to execute this command", 401)
+      );
+
+    try {
+      const AWSresult = await awsActions.S3DeleteObject(file.key);
+
+      if (!AWSresult) return next(new AppError("Error. Try again later", 500));
+
+      await SharedFile.findOneAndDelete({ _id: fileID });
+      await File.findOneAndDelete({ _id: file.fileID });
+
+      res.status(200).json({
+        message: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      return next(new AppError("An error occured", 500));
+    }
+  }
+);
+
+exports.renameSharedFile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { fileID, newFilename } = req.body;
+
+    if (!fileID.trim() && newFilename.trim())
+      return next(new AppError("file name required", 401));
+
+    const file = await SharedFile.findOne({
+      _id: fileID,
+      recipient: req.user._id,
+      canRename: true,
+    });
+
+    if (!file)
+      return next(
+        new AppError(
+          "file not found or you don't have access to execute this command",
+          401
+        )
+      );
+
+    await SharedFile.findOneAndUpdate(
+      { _id: file._id },
+      { $set: { name: newFilename } }
+    );
+
+    await File.findOneAndUpdate(
+      { _id: file.fileID },
+      { $set: { fileName: newFilename } }
+    );
+    res.status(200).json({
+      status: "success",
     });
   }
 );

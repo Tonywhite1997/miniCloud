@@ -13,6 +13,8 @@ interface SHAREDFILETYPE extends Document {
   canDownload: Boolean;
   canDelete: Boolean;
   ownerEmail: string;
+  link: string;
+  key: string;
 }
 const sharedFileShema: Schema<SHAREDFILETYPE> = new Schema<SHAREDFILETYPE>({
   name: {
@@ -53,6 +55,12 @@ const sharedFileShema: Schema<SHAREDFILETYPE> = new Schema<SHAREDFILETYPE>({
   canDownload: {
     type: Boolean,
     default: false,
+  },
+  link: {
+    type: String,
+  },
+  key: {
+    type: String,
   },
 });
 

@@ -37,6 +37,7 @@ function ShareFileDashboard() {
         returnToLoginPage(error);
       }
     },
+    refetchOnWindowFocus: false,
   });
 
   useQuery("BORROWED_FILES", {
@@ -53,6 +54,7 @@ function ShareFileDashboard() {
         returnToLoginPage(error);
       }
     },
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -86,7 +88,9 @@ function ShareFileDashboard() {
       <section className="your-borrowed-files">
         <h2>Files you have access to</h2>
         {isBottomLoading && <Loader />}
-        {borrowdFiles?.length < 1 && <p>No files were shared with you.</p>}
+        {!isBottomLoading && borrowdFiles?.length < 1 && (
+          <p>No files were shared with you.</p>
+        )}
         <div className="files-container">
           {borrowdFiles?.map((file: BORROWED_FILE) => {
             return (

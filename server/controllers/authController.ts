@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import JWT, { TokenExpiredError } from "jsonwebtoken";
 import dotenv from "dotenv";
-import process, { env } from "process";
 const User = require("../models/user");
 const File = require("../models/file");
 const Folder = require("../models/folder");
+const SharedFile = require("../models/sharedFile");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const AWSS3 = require("../aws-s3-service");
@@ -55,7 +55,7 @@ exports.register = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { name, email, password } = req.body;
 
-    if (!name || !email || !password)
+    if (!name.trim() || !email.trim() || !password.trim())
       return next(new AppError("All fields required", 400));
 
     const newUser = await User.create({ name, email, password });
@@ -427,6 +427,10 @@ exports.deleteAccount = catchAsync(
         if (!response.Deleted.length)
           return next(new AppError("An error occured. try again", 500));
       }
+
+      await SharedFile.deleteMany({
+        $or: [{ recipient: req.user._id }, { owner: req.user._id }],
+      });
 
       //deletinf user files details from mongodb
       await File.deleteMany({ user: user._id });

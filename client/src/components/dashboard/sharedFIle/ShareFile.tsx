@@ -78,7 +78,10 @@ function ShareFile() {
         {error.isError && <p className="error-msg">{error.errorMsg}</p>}
       </div>
       <label className="action-label">
-        Choose what this user can do with this file
+        Choose what this user can do with this file.
+        <br /> Note that once you share a file, the user can always open its
+        content:
+        <br /> You can't change the "open" default setting.
       </label>
       <div className="accesses">
         <div className="action">

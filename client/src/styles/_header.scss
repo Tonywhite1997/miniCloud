@@ -34,6 +34,8 @@
 
     .logout-btn {
         font-size: .9rem;
+        width: 60px;
+        @include flex(row);
         border: 1px dotted rgb(28, 105, 28);
         padding: .2em .5em;
         cursor: pointer;

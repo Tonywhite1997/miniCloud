@@ -33,7 +33,7 @@ export interface NEW_PASSWORD {
 
 export interface ERROR_DATA {
   isError: boolean;
-  error: string;
+  errorMsg: string;
 }
 
 export interface USER {

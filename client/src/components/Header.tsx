@@ -6,6 +6,7 @@ import CloudIcon from "../assets/CloudIcon";
 import { userContext } from "../utils/context";
 import urls from "../utils/authURL";
 import { returnToLoginPage } from "../utils/generalCommands/ReturnToLoginPage";
+import SmallLoader from "../UI/SmallLoader";
 
 function Header() {
   const { user, setUser, isLoading, setIsLoading } = useContext(userContext);
@@ -22,6 +23,7 @@ function Header() {
       setIsLoading(false);
       navigate("/auth/login");
     } catch (error) {
+      setIsLoading(false);
       returnToLoginPage(error);
     }
   }
@@ -36,7 +38,7 @@ function Header() {
       </div>
       {user?._id && (
         <p className="logout-btn" onClick={logout}>
-          {isLoading ? "loading" : "Logout"}
+          {isLoading ? <SmallLoader /> : "Logout"}
         </p>
       )}
     </header>

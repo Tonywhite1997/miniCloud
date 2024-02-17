@@ -66,6 +66,20 @@
 
 .header .logout-btn {
   font-size: .9rem;
+  width: 60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
   border: 1px dotted #1c691c;
   padding: .2em .5em;
   cursor: pointer;
@@ -1574,8 +1588,8 @@
 }
 
 .display-file-page .file {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2350,6 +2364,357 @@
 
 @media screen and (max-width: 600px) {
   .shared-file-dash {
+    padding: 1em .5em;
+  }
+}
+
+.shared-file-details {
+  height: 88%;
+  position: relative;
+}
+
+.shared-file-details h2 {
+  line-height: 1.75rem;
+  margin-bottom: .5em;
+  text-align: center;
+}
+
+.shared-file-details .error-msg {
+  color: #fc4242;
+  text-align: center;
+  font-size: .8rem;
+}
+
+.shared-file-details .background-overlay {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0em .5em;
+  background-color: rgba(203, 203, 203, 0.934);
+}
+
+.shared-file-details .background-overlay .form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: calc(280px - .5em);
+  gap: .5em;
+  background-color: white;
+  padding: 2em 2em;
+  border-radius: .3em;
+}
+
+.shared-file-details .background-overlay .form .input-field-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: .5em;
+}
+
+.shared-file-details .background-overlay .form .input-field-container label {
+  text-align: center;
+}
+
+.shared-file-details .background-overlay .form .input-field-container input {
+  height: 35px;
+  width: 250px;
+  border-radius: .3em;
+}
+
+.shared-file-details .background-overlay .form .buttons {
+  width: 250px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  gap: .3em;
+  padding: .5em 0;
+}
+
+.shared-file-details .background-overlay .form .buttons button, .shared-file-details .background-overlay .form .share-file .buttons .back, .share-file .shared-file-details .background-overlay .form .buttons .back {
+  border: none;
+  width: 80px;
+  padding: .3em .5em;
+  border-radius: .2em;
+  font-weight: 600;
+  background-color: #d2d1d1;
+}
+
+.shared-file-details .owner-section,
+.shared-file-details .recipient-section {
+  padding: 1em 2em;
+}
+
+.shared-file-details .owner-section .file-name,
+.shared-file-details .owner-section .recipient-email,
+.shared-file-details .owner-section .date,
+.shared-file-details .owner-section .permissions-container,
+.shared-file-details .owner-section .edit-permissions-container,
+.shared-file-details .recipient-section .file-name,
+.shared-file-details .recipient-section .recipient-email,
+.shared-file-details .recipient-section .date,
+.shared-file-details .recipient-section .permissions-container,
+.shared-file-details .recipient-section .edit-permissions-container {
+  text-align: center;
+  margin-bottom: .5em;
+}
+
+.shared-file-details .owner-section .date,
+.shared-file-details .recipient-section .date {
+  margin-bottom: 1.5em;
+}
+
+.shared-file-details .owner-section .permissions-container,
+.shared-file-details .recipient-section .permissions-container {
+  margin-bottom: .1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.shared-file-details .owner-section .permissions-container p,
+.shared-file-details .recipient-section .permissions-container p {
+  background-color: #e2e0e0;
+  padding: .2em .5em;
+  border-radius: .2em;
+  font-size: .8rem;
+}
+
+.shared-file-details .owner-section .permissions-container .current-permissions,
+.shared-file-details .recipient-section .permissions-container .current-permissions {
+  margin-bottom: 1.5em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: .5em;
+}
+
+.shared-file-details .owner-section .edit-permissions-container,
+.shared-file-details .recipient-section .edit-permissions-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.shared-file-details .owner-section .edit-permissions-container .edit-permissions,
+.shared-file-details .recipient-section .edit-permissions-container .edit-permissions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.shared-file-details .owner-section .edit-permissions-container .edit-permissions .action,
+.shared-file-details .recipient-section .edit-permissions-container .edit-permissions .action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 200px;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  gap: .2em;
+}
+
+.shared-file-details .owner-section .edit-permissions-container .buttons,
+.shared-file-details .recipient-section .edit-permissions-container .buttons {
+  margin-top: 1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: .3em;
+  margin-bottom: .5em;
+}
+
+.shared-file-details .owner-section .edit-permissions-container .buttons button, .shared-file-details .owner-section .edit-permissions-container .share-file .buttons .back, .share-file .shared-file-details .owner-section .edit-permissions-container .buttons .back,
+.shared-file-details .recipient-section .edit-permissions-container .buttons button,
+.shared-file-details .recipient-section .edit-permissions-container .share-file .buttons .back,
+.share-file .shared-file-details .recipient-section .edit-permissions-container .buttons .back {
+  border: none;
+  width: 120px;
+  padding: .3em .5em;
+  border-radius: .2em;
+  font-weight: 600;
+  background-color: #d2d1d1;
+}
+
+.shared-file-details .owner-section .edit-permissions-container .buttons .revoke-button,
+.shared-file-details .recipient-section .edit-permissions-container .buttons .revoke-button {
+  background-color: #d62828;
+  color: white;
+}
+
+.shared-file-details .recipient-section button, .shared-file-details .recipient-section .share-file .buttons .back, .share-file .buttons .shared-file-details .recipient-section .back {
+  border: none;
+  width: 80px;
+  padding: .3em .5em;
+  border-radius: .2em;
+  font-weight: 600;
+  background-color: #d2d1d1;
+}
+
+.shared-file-details .recipient-section .action-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: .5em;
+  padding: .5em .5em;
+}
+
+.shared-file-details .recipient-section .action-buttons .delete {
+  background-color: #d62828;
+  color: white;
+}
+
+.shared-file-details .recipient-section .action-buttons .link {
+  text-decoration: none;
+  color: black;
+}
+
+.shared-file-details .recipient-section .withdraw-access {
+  padding: 1em 1em;
+  margin-top: 1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.shared-file-details .recipient-section .withdraw-access button, .shared-file-details .recipient-section .withdraw-access .share-file .buttons .back, .share-file .buttons .shared-file-details .recipient-section .withdraw-access .back {
+  width: 150px;
+  background-color: #d62828;
+  color: white;
+  margin-bottom: .2em;
+}
+
+@media screen and (max-width: 600px) {
+  .shared-file-details .owner-section,
+  .shared-file-details .recipient-section {
     padding: 1em .5em;
   }
 }

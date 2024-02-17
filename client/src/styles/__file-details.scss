@@ -1,0 +1,208 @@
+.shared-file-details {
+    height: 88%;
+    position: relative;
+
+    h2 {
+        // border: 1px solid red;
+        line-height: 1.75rem;
+        margin-bottom: .5em;
+        text-align: center;
+    }
+
+    .error-msg {
+        // border: 1px solid red;
+        color: rgb(252, 66, 66);
+        text-align: center;
+        font-size: .8rem;
+    }
+
+    .background-overlay {
+        // border: 1px solid red;
+        position: absolute;
+        @include flex(column);
+        width: 100%;
+        height: 100%;
+        padding: 0em .5em;
+        background-color: rgba(203, 203, 203, 0.934);
+
+        .form {
+            @include flex(column);
+            // border: 1px solid red;
+            width: calc(280px - .5em);
+            gap: .5em;
+            background-color: white;
+            padding: 2em 2em;
+            border-radius: .3em;
+
+            .input-field-container {
+                @include flex(column);
+
+                gap: .5em;
+
+                label {
+                    text-align: center
+                }
+
+                input {
+                    height: 35px;
+                    width: 250px;
+                    border-radius: .3em;
+                }
+            }
+
+            .buttons {
+                // border: 1px solid red;
+                width: 250px;
+                @include flex(row);
+                justify-content: flex-end;
+                gap: .3em;
+                padding: .5em 0;
+
+                button {
+                    border: none;
+                    width: 80px;
+                    padding: .3em .5em;
+                    border-radius: .2em;
+                    font-weight: 600;
+                    background-color: rgb(210, 209, 209);
+                }
+            }
+        }
+
+
+    }
+
+    .owner-section,
+    .recipient-section {
+        padding: 1em 2em;
+
+        .file-name,
+        .recipient-email,
+        .date,
+        .permissions-container,
+        .edit-permissions-container {
+            text-align: center;
+            margin-bottom: .5em;
+            // border: 1px solid red;
+        }
+
+        .date {
+            margin-bottom: 1.5em;
+        }
+
+        .permissions-container {
+            // border: 1px solid red;
+            margin-bottom: .1em;
+            @include flex(column);
+
+            p {
+                background-color: rgb(226, 224, 224);
+                padding: .2em .5em;
+                border-radius: .2em;
+                font-size: .8rem;
+            }
+
+            .current-permissions {
+                // border: 1px solid red;
+                margin-bottom: 1.5em;
+                @include flex(row);
+                gap: .5em;
+            }
+
+        }
+
+        .edit-permissions-container {
+            @include flex(column);
+
+            .edit-permissions {
+                @include flex(column);
+
+                .action {
+                    @include flex(row);
+                    // border: 1px solid red;
+                    width: 200px;
+                    justify-content: flex-start;
+                    gap: .2em;
+                }
+            }
+
+            .buttons {
+                // border: 1px solid red;
+                margin-top: 1em;
+                @include flex(row);
+                gap: .3em;
+                margin-bottom: .5em;
+
+                button {
+                    border: none;
+                    width: 120px;
+                    padding: .3em .5em;
+                    border-radius: .2em;
+                    font-weight: 600;
+                    background-color: rgb(210, 209, 209);
+                }
+
+                .revoke-button {
+                    background-color: rgb(214, 40, 40);
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .recipient-section {
+
+        button {
+            border: none;
+            width: 80px;
+            padding: .3em .5em;
+            border-radius: .2em;
+            font-weight: 600;
+            background-color: rgb(210, 209, 209);
+        }
+
+        .action-buttons {
+            // border: 1px solid red;
+            @include flex(row);
+            flex-wrap: wrap;
+            gap: .5em;
+            padding: .5em .5em;
+
+            .delete {
+                background-color: rgb(214, 40, 40);
+                color: white;
+            }
+
+
+
+            .link {
+                text-decoration: none;
+                color: black;
+            }
+        }
+
+        .withdraw-access {
+            // border: 1px solid red;
+            padding: 1em 1em;
+            margin-top: 1em;
+            @include flex(column);
+
+            button {
+                width: 150px;
+                background-color: rgb(214, 40, 40);
+                color: white;
+                margin-bottom: .2em;
+            }
+        }
+    }
+}
+
+@media screen and (max-width:600px) {
+    .shared-file-details {
+
+        .owner-section,
+        .recipient-section {
+            padding: 1em .5em;
+        }
+    }
+}

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import SmallLoader from "../../../UI/SmallLoader";
 import urls from "../../../utils/authURL";
@@ -21,8 +20,6 @@ function VerifyAccount() {
     setVerificationCode(value);
   }
 
-  const navigate = useNavigate();
-
   async function ConfirmVerificationCode() {
     setError({ isError: false, errorMsg: "" });
     setIsLoading(true);
@@ -32,7 +29,7 @@ function VerifyAccount() {
         verificationCode,
       });
       setIsLoading(false);
-      navigate("/user/dashboard");
+      window.location.assign("/user/dashboard");
     } catch (error) {
       setIsLoading(false);
       setVerificationCode("");

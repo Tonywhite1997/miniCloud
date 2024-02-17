@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import urls from "./authURL";
 import Loader from "../UI/Loader";
+import { returnToLoginPage } from "./generalCommands/ReturnToLoginPage";
 
 export const userContext = createContext({});
 export const fileContext = createContext({});
@@ -27,6 +28,7 @@ export const UserProvider = ({ children }) => {
     } catch (error) {
       setIsLoading(false);
       setIsError(true);
+      returnToLoginPage(error);
     }
   };
   const location = useLocation();

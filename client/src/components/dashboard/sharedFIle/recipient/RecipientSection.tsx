@@ -1,0 +1,122 @@
+import axios from "axios";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import SmallLoader from "../../../../UI/SmallLoader";
+import urls from "../../../../utils/authURL";
+import { ERROR_DATA } from "../../../../utils/customTypes";
+import { returnToLoginPage } from "../../../../utils/generalCommands/ReturnToLoginPage";
+import RenameDialog from "./RenameDialog";
+
+function RecipientSection({ file, setIsRenaming }) {
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [error, setError] = useState<ERROR_DATA>({
+    isError: false,
+    errorMsg: "",
+  });
+  const [errorBelow, setErrorBelow] = useState<ERROR_DATA>({
+    isError: false,
+    errorMsg: "",
+  });
+
+  const [isRevoking, setIsRevoking] = useState(false);
+
+  const date = new Date(file?.createdAt);
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+
+  const formattedDate = `${day}/${month}/${year}`;
+
+  const joinedURL = file?.link?.split("upload/")[1].split(".")[0];
+  const mimeType: string = file?.link?.split(".").pop();
+
+  async function deleteSharedFile() {
+    setIsDeleting(true);
+    try {
+      await axios.delete(`${urls.sharedFileURL}/files/delete-file`, {
+        data: {
+          fileID: file?._id,
+        },
+      });
+      setIsDeleting(false);
+      window.location.assign("/share-file/dashboard");
+    } catch (error) {
+      setIsDeleting(false);
+      setError({ isError: true, errorMsg: error?.response.data.message });
+      returnToLoginPage(error);
+    }
+  }
+
+  async function withdrawMyAccess() {
+    setIsRevoking(true);
+
+    try {
+      await axios.post(`${urls.sharedFileURL}/file/revoke-permissions`, {
+        fileID: file?._id,
+      });
+      setIsRevoking(false);
+      window.location.assign("/share-file/dashboard");
+    } catch (error) {
+      setIsRevoking(false);
+      setErrorBelow({ isError: true, errorMsg: error?.response.data.message });
+      returnToLoginPage(error);
+    }
+  }
+
+  return (
+    <section className="recipient-section">
+      <div className="file-name">
+        <p>File Name:</p>
+        <p>{file?.name}</p>
+      </div>
+      <div className="recipient-email">
+        <p>Recipient Email:</p>
+        <p>{file?.recipientEmail}</p>
+      </div>
+      <div className="date">
+        <p>File shared on:</p>
+        <p>{formattedDate}</p>
+      </div>
+      <div className="permissions-container">
+        <h2>What you can do with this file</h2>
+        <div className="action-buttons">
+          <button>
+            <Link
+              to={`/user/dashboard/file/${joinedURL}/${mimeType}`}
+              className="link"
+            >
+              Open
+            </Link>
+          </button>
+          {file?.canDownload && <button>Download</button>}
+          {file?.canDelete && (
+            <button onClick={deleteSharedFile} className="delete">
+              {isDeleting ? <SmallLoader /> : "Delete"}
+            </button>
+          )}
+          {file?.canRename && (
+            <button
+              onClick={() => {
+                setIsRenaming(true);
+              }}
+            >
+              Rename
+            </button>
+          )}
+        </div>
+      </div>
+      {error.isError && <p className="error-msg">{error.errorMsg}</p>}
+      <div className="withdraw-access">
+        <h2>Withdraw your access to this file </h2>
+        <button onClick={withdrawMyAccess}>
+          {isRevoking ? <SmallLoader /> : "Withdraw Access"}
+        </button>
+        {errorBelow.isError && (
+          <p className="error-msg">{errorBelow.errorMsg}</p>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export default RecipientSection;
