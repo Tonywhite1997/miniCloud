@@ -59,6 +59,7 @@ exports.shareFile = catchAsync(
       ownerEmail: req.user.email,
       link: file.link,
       key: file.key,
+      mimetype: file.mimetype,
     };
 
     try {
@@ -261,5 +262,38 @@ exports.renameSharedFile = catchAsync(
     res.status(200).json({
       status: "success",
     });
+  }
+);
+
+exports.downloadSharedFile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { fileID } = req.params;
+
+    try {
+      const file = await SharedFile.findOne({
+        _id: fileID,
+        recipient: req.user._id,
+      });
+
+      if (!file)
+        return next(
+          new AppError(
+            "You don't have permission to execute this command or file has been removed.",
+            401
+          )
+        );
+
+      const result = await awsActions.S3Download(file.key);
+
+      if (!result) return next(new AppError("Error: Try again", 500));
+
+      res.setHeader("Content-Type", file.mimetype);
+      res.setHeader("Transfer-Encoding", "chunked");
+      res.setHeader("Content-Disposition", `attachment; filename=${file.name}`);
+
+      result.pipe(res);
+    } catch (error) {
+      next(new AppError("error downloading your file", 500));
+    }
   }
 );

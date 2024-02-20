@@ -5,7 +5,6 @@ import SmallLoader from "../../../../UI/SmallLoader";
 import urls from "../../../../utils/authURL";
 import { ERROR_DATA } from "../../../../utils/customTypes";
 import { returnToLoginPage } from "../../../../utils/generalCommands/ReturnToLoginPage";
-import RenameDialog from "./RenameDialog";
 
 function RecipientSection({ file, setIsRenaming }) {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -33,7 +32,7 @@ function RecipientSection({ file, setIsRenaming }) {
   async function deleteSharedFile() {
     setIsDeleting(true);
     try {
-      await axios.delete(`${urls.sharedFileURL}/files/delete-file`, {
+      await axios.delete(`${urls.sharedFileURL}/file/delete-file`, {
         data: {
           fileID: file?._id,
         },
@@ -63,6 +62,37 @@ function RecipientSection({ file, setIsRenaming }) {
     }
   }
 
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+
+  async function downloadSharedFile() {
+    setIsDownloading(true);
+    try {
+      const response = await axios.get(
+        `${urls.sharedFileURL}/file/download/${file?._id}`
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = file?.name;
+      document.body.appendChild(a);
+
+      a.dispatchEvent(
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+        })
+      );
+
+      document.body.removeChild(a);
+      setIsDownloading(false);
+    } catch (error) {
+      setIsDownloading(false);
+      setError({ isError: true, errorMsg: error?.response.data.message });
+      returnToLoginPage(error);
+    }
+  }
+
   return (
     <section className="recipient-section">
       <div className="file-name">
@@ -70,8 +100,8 @@ function RecipientSection({ file, setIsRenaming }) {
         <p>{file?.name}</p>
       </div>
       <div className="recipient-email">
-        <p>Recipient Email:</p>
-        <p>{file?.recipientEmail}</p>
+        <p>Owner's Email:</p>
+        <p>{file?.ownerEmail}</p>
       </div>
       <div className="date">
         <p>File shared on:</p>
@@ -88,7 +118,11 @@ function RecipientSection({ file, setIsRenaming }) {
               Open
             </Link>
           </button>
-          {file?.canDownload && <button>Download</button>}
+          {file?.canDownload && (
+            <button onClick={downloadSharedFile}>
+              {isDownloading ? <SmallLoader /> : "Download"}
+            </button>
+          )}
           {file?.canDelete && (
             <button onClick={deleteSharedFile} className="delete">
               {isDeleting ? <SmallLoader /> : "Delete"}

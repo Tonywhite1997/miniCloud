@@ -11,6 +11,7 @@ router.post("/share", sharedFileController.shareFile);
 router.get("/files", sharedFileController.getUserSharedFiles);
 router.get("/borrowed-files", sharedFileController.getUserBorrowedFiles);
 router.get("/file/:fileID", sharedFileController.getFile);
+router.get("/file/download/:fileID", sharedFileController.downloadSharedFile);
 router.post(
   "/file/edit-permissions",
   sharedFileController.editRecipientPermissions

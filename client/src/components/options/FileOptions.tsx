@@ -64,8 +64,11 @@ function FileOptions({ fileOptionsProps }) {
 
   const [isDownloadLoading, setIsDownloadLoading] = useState<boolean>(false);
 
+  const url = `${urls.fileURL}/download/${selectedFile?.id}`;
+
   async function downloadFile() {
     downloadFileSetup(
+      url,
       selectedFile,
       closeFileOptions,
       setIsDownloadError,

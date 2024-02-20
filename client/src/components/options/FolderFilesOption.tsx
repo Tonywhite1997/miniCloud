@@ -72,8 +72,11 @@ function FileOptions({ folderFileOptionsProps }) {
 
   const [isDownloadLoading, setIsDownloadLoading] = useState<boolean>(false);
 
+  const url = `${urls.fileURL}/download/${selectedFolderFile?.id}`;
+
   function downloadFile() {
     downloadFileSetup(
+      url,
       selectedFolderFile,
       closeFolderFileOptions,
       setIsDownloadError,

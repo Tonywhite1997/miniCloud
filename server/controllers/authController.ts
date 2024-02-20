@@ -26,13 +26,16 @@ const getJWTToken = (user_id: string): string => {
 };
 
 interface cookieType {
-  httponly: boolean;
+  httpOnly: boolean;
   maxAge: number;
-  secure?: boolean;
+  secure: boolean;
+  sameSite: boolean | "lax" | "strict" | "none";
 }
 
 const cookieOptions: cookieType = {
-  httponly: true,
+  httpOnly: true,
+  sameSite: "strict",
+  secure: process.env.NODE_ENV === "production",
   maxAge: 90 * 24 * 60 * 60 * 1000,
 };
 
@@ -42,7 +45,7 @@ interface IUSER {
 
 const sendJWTToken = (user: IUSER, res: Response, statusCode: number) => {
   const token = getJWTToken(user._id);
-  if ((process.env.NODE_ENV = "production")) cookieOptions.secure = true;
+
   res.cookie("miniCloudToken", token, cookieOptions);
   return res.json({
     status: "ok",
@@ -456,7 +459,9 @@ exports.deleteAccount = catchAsync(
 exports.logout = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const cookieOptions: cookieType = {
-      httponly: true,
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
       maxAge: 100,
     };
     if (process.env.NODE_ENV === "production") cookieOptions.secure = true;

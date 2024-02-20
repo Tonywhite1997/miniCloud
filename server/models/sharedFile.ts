@@ -15,6 +15,7 @@ interface SHAREDFILETYPE extends Document {
   ownerEmail: string;
   link: string;
   key: string;
+  mimetype: string;
 }
 const sharedFileShema: Schema<SHAREDFILETYPE> = new Schema<SHAREDFILETYPE>({
   name: {
@@ -60,6 +61,9 @@ const sharedFileShema: Schema<SHAREDFILETYPE> = new Schema<SHAREDFILETYPE>({
     type: String,
   },
   key: {
+    type: String,
+  },
+  mimetype: {
     type: String,
   },
 });

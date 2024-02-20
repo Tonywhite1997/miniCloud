@@ -139,8 +139,8 @@ exports.renameFile = catchAsync(
 
 exports.downloadFIle = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const { objectID } = req.params;
     try {
-      const { objectID } = req.params;
       const file = await File.findById(objectID);
 
       if (!file) return next(new AppError("file not found.", 404));
@@ -158,8 +158,6 @@ exports.downloadFIle = catchAsync(
 
       result.pipe(res);
     } catch (error) {
-      console.log(error);
-
       next(new AppError("error downloading your file", 500));
     }
   }

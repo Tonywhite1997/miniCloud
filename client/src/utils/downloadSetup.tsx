@@ -1,18 +1,18 @@
-import urls from "./authURL";
 import axios from "axios";
 import { returnToLoginPage } from "./generalCommands/ReturnToLoginPage";
 
 export async function downloadFileSetup(
+  donwloadURL,
   selectedObject,
-  closeObjectOptions,
+  closeObjectOptions?,
   setIsDownloadError,
   setIsDownloadLoading
 ) {
-  const { id, name } = selectedObject;
+  const { name } = selectedObject;
   setIsDownloadError(false);
   setIsDownloadLoading(true);
   try {
-    const response = await axios.get(`${urls.fileURL}/download/${id}`, {
+    const response = await axios.get(donwloadURL, {
       responseType: "blob",
     });
 
@@ -21,8 +21,17 @@ export async function downloadFileSetup(
     a.href = url;
     a.download = name;
     document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
+
+    a.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      })
+    );
+
+    document.body.removeChild(a);
+
     setIsDownloadLoading(false);
     closeObjectOptions();
   } catch (error) {
