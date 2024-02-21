@@ -127,7 +127,7 @@
                     // border: 1px solid red;
                     @include flex(row);
                     justify-content: flex-start;
-                    align-items: flex-start;
+                    align-items: center;
                     width: 100%;
                     gap: .5em;
                     padding-bottom: .3em;

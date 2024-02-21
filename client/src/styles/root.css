@@ -570,9 +570,7 @@
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  align-items: center;
   width: 100%;
   gap: .5em;
   padding-bottom: .3em;
