@@ -322,6 +322,21 @@ exports.getCurrentUserFiles = catchAsync(
   }
 );
 
+exports.getFile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { fileID } = req.params;
+
+    const file = await File.findById(fileID);
+
+    if (!file) return next(new AppError("invalid file ID", 401));
+
+    res.status(200).json({
+      status: "success",
+      file,
+    });
+  }
+);
+
 exports.getCurrentUserFolderFiles = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { folderID } = req.params;

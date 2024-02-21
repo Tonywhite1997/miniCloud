@@ -7,14 +7,19 @@
     padding: 2em 2em;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 0em .5em;
+
+    .error-msg {
+        color: rgb(244, 65, 65);
+    }
 
     .file {
-        // border: 1px solid red;
-        // width: 100%;
-        // height: 100%;
         width: auto;
         height: auto;
         @include flex(row);
+        justify-content: center;
+        align-items: center;
 
         img {
             width: 100%;

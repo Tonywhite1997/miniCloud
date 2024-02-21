@@ -1,6 +1,10 @@
 import React from "react";
 
-function ImageViewer({ imageURL }) {
+interface ImageLink {
+  imageURL: string;
+}
+
+function ImageViewer({ imageURL }: ImageLink): JSX.Element {
   return (
     <div className="file">
       <img src={imageURL} />

@@ -41,8 +41,12 @@ function App() {
 
               <Route path="/user/dashboard" element={<UserDashboard />} />
 
-              <Route
+              {/* <Route
                 path="/user/dashboard/file/:fileID/:mimeType"
+                element={<DisplayFilePage />}
+              /> */}
+              <Route
+                path="/files/:fileID/display"
                 element={<DisplayFilePage />}
               />
 

@@ -732,37 +732,6 @@
   height: 100%;
 }
 
-.dashboard .dashboard-action-section .file-section-container .search-file-container {
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-  gap: .5em;
-  padding-block: .5em;
-}
-
-.dashboard .dashboard-action-section .file-section-container .search-file-container div {
-  height: 30px;
-}
-
-.dashboard .dashboard-action-section .file-section-container .search-file-container label {
-  font-size: .8rem;
-  color: #616161;
-}
-
-.dashboard .dashboard-action-section .file-section-container .search-file-container input {
-  height: 100%;
-  width: 100%;
-  border-radius: 0;
-  border: 1px solid grey;
-}
-
 .dashboard .dashboard-action-section .file-section-container .empty-dashboard-text {
   width: 100%;
   text-align: center;
@@ -919,6 +888,7 @@
 .dashboard .dashboard-action-section .file-section-container .move-all-button {
   margin: 1em .5em;
   padding: .5em 1em;
+  width: auto;
   background: -webkit-gradient(linear, left top, right top, from(#630909), to(#095109));
   background: linear-gradient(to right, #630909, #095109);
   color: white;
@@ -1265,6 +1235,13 @@
   .dashboard-action-section .container .file-section-container {
     width: 90%;
   }
+  .dashboard-action-section .container .file-section-container .move-all-button {
+    margin-top: -1em;
+    padding: .5em 1em;
+    background: -webkit-gradient(linear, left top, right top, from(#630909), to(#095109));
+    background: linear-gradient(to right, #630909, #095109);
+    color: white;
+  }
 }
 
 @media screen and (max-width: 650px) {
@@ -1585,6 +1562,12 @@
   padding: 2em 2em;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  padding: 0em .5em;
+}
+
+.display-file-page .error-msg {
+  color: #f44141;
 }
 
 .display-file-page .file {
@@ -1603,6 +1586,8 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .display-file-page .file img {

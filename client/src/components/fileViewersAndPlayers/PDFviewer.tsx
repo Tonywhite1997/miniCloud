@@ -1,13 +1,20 @@
 import React from "react";
 
-function PDFviewer({ pdfURL, windowSize }) {
+interface PDF_Type {
+  pdfURL: string;
+  windowSize: {
+    height: number;
+    width: number;
+  };
+}
+
+function PDFviewer({ pdfURL, windowSize }: PDF_Type) {
   return (
     <div>
       <iframe
         src={pdfURL}
         width={windowSize.width}
         height={windowSize.height}
-        // frameBorder={0}
         allowFullScreen
       ></iframe>
     </div>

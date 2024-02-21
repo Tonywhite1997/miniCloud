@@ -165,7 +165,7 @@ function FileSection() {
 
   const [isFolderFileOption, setIsFolderFileOption] = useState(false);
   const [selectedFolderFile, setSelectedFolderFile] = useState({
-    name: "",
+    fileName: "",
     id: "",
     fileSize: 0,
   });

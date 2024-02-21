@@ -84,7 +84,6 @@ function FileOptions({ folderFileOptionsProps }) {
     );
   }
 
-  const joinedURL: string = chosenFile.link.split("upload/")[1].split(".")[0];
   const mimeType: string = chosenFile.link.split(".").pop();
 
   return (
@@ -108,7 +107,7 @@ function FileOptions({ folderFileOptionsProps }) {
 
         <Link
           // to="/user/dashboard/file"
-          to={`/user/dashboard/file/${joinedURL}/${mimeType}`}
+          to={`/files/${chosenFile._id}/display`}
           className="folder-options-view"
           onClick={() => setFileProviderData(chosenFile)}
         >

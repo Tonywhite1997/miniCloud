@@ -1,10 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
-import { fileContext } from "../utils/context";
+import { useQuery } from "react-query";
 import ImageViewer from "./fileViewersAndPlayers/ImageViewer";
 import AudioPlayer from "./fileViewersAndPlayers/AudioPlayer";
 import PDFviewer from "./fileViewersAndPlayers/PDFviewer";
 import VideoPlayer from "./fileViewersAndPlayers/VideoPlayer";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { ERROR_DATA, FILE } from "../utils/customTypes";
+import axios from "axios";
+import urls from "../utils/authURL";
+import { returnToLoginPage } from "../utils/generalCommands/ReturnToLoginPage";
+import Loader from "../UI/Loader";
 
 interface WINDOW {
   height: number;
@@ -34,71 +39,67 @@ function DisplayFilePage() {
     };
   });
 
-  const { fileID, mimeType } = useParams<{
-    fileID: string;
-    mimeType: string;
-  }>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<ERROR_DATA>({
+    isError: false,
+    errorMsg: "",
+  });
+  const [file, setFile] = useState<FILE>({});
 
-  const { fileProviderData } = useContext(fileContext);
+  const { fileID } = useParams<{ fileID: string }>();
 
-  const imageTypes = ["png", "jpg", "jpeg", "webp", "tiff", "svg", "gif"];
-  const videoTypes = ["mp4", "ogg", "webm", "ogv"];
-  const audioTypes = ["mpeg", "wav", "ogg", "aac", "mp4", "m4a"];
-  const bookTypes = ["pdf"];
-  const acceptedTypes = [
-    "png",
-    "jpg",
-    "jpeg",
-    "webp",
-    "tiff",
-    "svg",
-    "gif",
-    "mp4",
-    "ogg",
-    "webm",
-    "ogv",
-    "mpeg",
-    "wav",
-    "ogg",
-    "aac",
-    "mp4",
-    "m4a",
-    "pdf",
-  ];
+  useQuery("FILE", {
+    queryFn: async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await axios.get(
+          `${urls.fileURL}/display/files/${fileID}`
+        );
+        setFile(data.file);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        setError({ isError: true, errorMsg: error.response.data.message });
+        returnToLoginPage(error);
+      }
+    },
+    refetchOnWindowFocus: false,
+  });
 
-  const fileURL: string = `https://minicloud-s3.s3.amazonaws.com/upload/${fileID}.${mimeType}`;
-
-  const alternateMimeType =
-    fileProviderData.mimetype && fileProviderData.mimetype.split("/")[1];
-  const usefulMimeType = mimeType || alternateMimeType;
+  const types = ["audio", "video", "image", "application/pdf"];
 
   return (
     <div className="display-file-page">
-      {!acceptedTypes.includes(usefulMimeType) && (
-        <div>
-          <h2>File type not supported</h2>
-          <Link to="/user/dashboard">back</Link>
-        </div>
+      {isLoading && <Loader />}
+
+      {file._id && !types.some((type) => file.mimetype.includes(type)) && (
+        <p>File not supported</p>
       )}
+
+      {error.isError && <p className="error-msg">{error.errorMsg}</p>}
 
       {/* for images files*/}
-      {fileProviderData && imageTypes.includes(usefulMimeType) && (
-        <ImageViewer imageURL={fileURL} />
+      {file._id && file.mimetype.includes("image") && (
+        <ImageViewer imageURL={file.link} />
       )}
 
-      {/* for WINDOWs files */}
-      {fileProviderData && videoTypes.includes(usefulMimeType) && (
-        <VideoPlayer videoURL={fileURL} windowSize={windowSize} />
+      {/* for video files */}
+      {file._id && file.mimetype.includes("video") && (
+        <VideoPlayer
+          videoURL={file.link}
+          windowSize={windowSize}
+          type={file.mimetype}
+        />
       )}
 
       {/* for audio files */}
-      {fileProviderData && audioTypes.includes(usefulMimeType) && (
-        <AudioPlayer audioURL={fileURL} />
+      {file._id && file.mimetype.includes("audio") && (
+        <AudioPlayer audioURL={file.link} type={file.mimetype} />
       )}
 
       {/* for pdf files */}
-      {fileProviderData && bookTypes.includes(usefulMimeType) && (
-        <PDFviewer pdfURL={fileURL} windowSize={windowSize} />
+      {file._id && file.mimetype.includes("application/pdf") && (
+        <PDFviewer pdfURL={file.link} windowSize={windowSize} />
       )}
     </div>
   );

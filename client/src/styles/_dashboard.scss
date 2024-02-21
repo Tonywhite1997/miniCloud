@@ -234,36 +234,6 @@
             position: relative;
             height: 100%;
 
-            .search-file-container {
-                // border: 1px solid red;
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: .5em;
-                padding-block: .5em;
-
-                div {
-
-                    // border: 1px solid red;
-                    height: 30px;
-                }
-
-                label {
-                    font-size: .8rem;
-                    color: rgb(97, 97, 97);
-                }
-
-                input {
-                    // border: 1px solid red;
-                    height: 100%;
-                    width: 100%;
-                    border-radius: 0;
-                    border: 1px solid grey;
-                }
-            }
-
-
             .empty-dashboard-text {
                 // border: 1px solid red;
                 width: 100%;
@@ -331,6 +301,7 @@
                 }
 
                 .move-buttons {
+                    // border: 1px solid red;
                     @include flex(row);
                     justify-content: flex-end;
                     gap: .5em;
@@ -360,6 +331,7 @@
                 // border: 1px solid red;
                 margin: 1em .5em;
                 padding: .5em 1em;
+                width: auto;
                 background: linear-gradient(to right, rgb(99, 9, 9), rgb(9, 81, 9));
                 color: white
             }
@@ -585,6 +557,13 @@
         .container {
             .file-section-container {
                 width: 90%;
+
+                .move-all-button {
+                    margin-top: -1em;
+                    padding: .5em 1em;
+                    background: linear-gradient(to right, rgb(99, 9, 9), rgb(9, 81, 9));
+                    color: white
+                }
             }
         }
     }
