@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import Header from "./components/Header";
 import Login from "./components/authentication/Login";
 import SignUp from "./components/authentication/SignUp";
@@ -15,7 +14,7 @@ import VerifyAccount from "./components/authentication/emailVerification/VerifyA
 import ChangePassword from "./components/authentication/ChangePassword";
 import DeleteAccount from "./components/authentication/DeleteAccount";
 import ShareFile from "./components/dashboard/sharedFIle/ShareFile";
-import ShareFileDashboard from "./components/dashboard/sharedFIle/shareFileDashboard";
+import ShareFileDashboard from "./components/dashboard/sharedFIle/ShareFileDashboard";
 import SharedFileDetails from "./components/dashboard/sharedFIle/SharedFileDetails";
 
 const queryClient = new QueryClient();
@@ -83,7 +82,6 @@ function App() {
           </FileProvider>
         </UserProvider>
       </Router>
-      {/* <ReactQueryDevtools initialIsOpen={false} position="bottom-right" /> */}
     </QueryClientProvider>
   );
 }
