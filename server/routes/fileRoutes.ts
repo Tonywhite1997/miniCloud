@@ -8,7 +8,7 @@ router.use(authController.protected);
 router.use(authController.isAccountVerified);
 
 router.get("/files", fileController.getCurrentUserFiles);
-router.get("/display/files/:fileID", fileController.getFile);
+router.get("/:fileID", fileController.getFile);
 router.get("/files/:folderID", fileController.getCurrentUserFolderFiles);
 router.post("/verify-available-space", fileController.verifyAvailableSpace);
 router.post("/rename-file", fileController.renameFile);

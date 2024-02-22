@@ -93,6 +93,8 @@ function RecipientSection({ file, setIsRenaming }) {
     }
   }
 
+  console.log(file);
+
   return (
     <section className="recipient-section">
       <div className="file-name">
@@ -111,10 +113,7 @@ function RecipientSection({ file, setIsRenaming }) {
         <h2>What you can do with this file</h2>
         <div className="action-buttons">
           <button>
-            <Link
-              to={`/user/dashboard/file/${joinedURL}/${mimeType}`}
-              className="link"
-            >
+            <Link to={`/share-files/${file._id}/display`} className="link">
               Open
             </Link>
           </button>

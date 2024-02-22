@@ -4,7 +4,7 @@ import ImageViewer from "./fileViewersAndPlayers/ImageViewer";
 import AudioPlayer from "./fileViewersAndPlayers/AudioPlayer";
 import PDFviewer from "./fileViewersAndPlayers/PDFviewer";
 import VideoPlayer from "./fileViewersAndPlayers/VideoPlayer";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { ERROR_DATA, FILE } from "../utils/customTypes";
 import axios from "axios";
 import urls from "../utils/authURL";
@@ -48,14 +48,23 @@ function DisplayFilePage() {
 
   const { fileID } = useParams<{ fileID: string }>();
 
+  const location = useLocation();
+
+  console.log(location.pathname.includes("share-file"));
+
   useQuery("FILE", {
     queryFn: async () => {
       setIsLoading(true);
       try {
-        const { data } = await axios.get(
-          `${urls.fileURL}/display/files/${fileID}`
-        );
-        setFile(data.file);
+        if (location.pathname.includes("share-file")) {
+          const { data } = await axios.get(
+            `${urls.sharedFileURL}/file/${fileID}`
+          );
+          setFile(data.file);
+        } else {
+          const { data } = await axios.get(`${urls.fileURL}/${fileID}`);
+          setFile(data.file);
+        }
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
