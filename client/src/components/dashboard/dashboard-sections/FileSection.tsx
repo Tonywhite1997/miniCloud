@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext, ChangeEvent } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import CreateFolderIcon from "../../../assets/CreateFolderIcon";
 import UploadIcon from "../../../assets/UploadIcon";
 import NewFolder from "../NewFolder";
 import MoveFile from "../moveFiles/MoveFile";
 import urls from "../../../utils/authURL";
-import { FILE, FOLDER } from "../../../utils/customTypes";
+import { ERROR_DATA, FILE, FOLDER } from "../../../utils/customTypes";
 import FolderOptions from "../../options/FolderOptions";
 import { userContext } from "../../../utils/context";
 import FileOptions from "../../options/FileOptions";
@@ -110,12 +110,10 @@ function FileSection() {
     setFiles(fileData?.data?.files);
   }, [fileData]);
 
-  interface ERROR_TYPE {
-    error: string;
-    isError: boolean;
-  }
-
-  const [error, setError] = useState<ERROR_TYPE>({ error: "", isError: false });
+  const [error, setError] = useState<ERROR_DATA>({
+    errorMsg: "",
+    isError: false,
+  });
 
   const getMyFolderFiles = async (folderToload: FOLDER) => {
     setMultipleFilesSelected([]);
@@ -125,11 +123,22 @@ function FileSection() {
       const { data } = await axios.get(url);
       setFolderFiles(data.files);
     } catch (error) {
-      if (error?.response.data.message.includes("login")) {
-        queryClient.clear();
-        setUser({});
+      if (axios.isAxiosError(error)) {
+        if (error.response?.data.message.includes("login")) {
+          queryClient.clear();
+          setUser({
+            allocatedSpace: 0,
+            usedSpace: 0,
+            _id: "",
+            name: "",
+            email: "",
+            isVerified: false,
+          });
+        } else {
+          setError({ errorMsg: error.response?.data.message, isError: true });
+        }
       }
-      setError({ error: error?.response.data.message, isError: true });
+
       returnToLoginPage(error);
       // console.log(error)
     }
@@ -242,7 +251,7 @@ function FileSection() {
           fileSize,
         });
 
-        const { data }: AxiosResponse = await axios.post(
+        const { data }: AxiosRequestConfig = await axios.post(
           uploadRequestLink,
           formData,
           config
@@ -266,10 +275,18 @@ function FileSection() {
       } catch (error) {
         returnToLoginPage(error);
         event.target.value = "";
-        setUploadError({
-          isError: true,
-          errorMsg: error?.response?.data?.message,
-        });
+
+        if (axios.isAxiosError(error)) {
+          setUploadError({
+            isError: true,
+            errorMsg: error?.response?.data?.message,
+          });
+        } else {
+          setUploadError({
+            isError: true,
+            errorMsg: "An error occurred. try again",
+          });
+        }
       }
     }
   }
@@ -606,7 +623,7 @@ function FileSection() {
           )}
 
         {currentFolderDetails.name && error.isError && (
-          <p className="folder-file-error">{error.error}</p>
+          <p className="folder-file-error">{error.errorMsg}</p>
         )}
 
         {currentFolderDetails.name && (

@@ -4,9 +4,9 @@ import { returnToLoginPage } from "./generalCommands/ReturnToLoginPage";
 export async function downloadFileSetup(
   donwloadURL,
   selectedObject,
-  closeObjectOptions?,
   setIsDownloadError,
-  setIsDownloadLoading
+  setIsDownloadLoading,
+  closeObjectOptions?
 ) {
   const { name } = selectedObject;
   setIsDownloadError(false);

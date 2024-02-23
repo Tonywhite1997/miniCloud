@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { FormEventHandler, useState } from "react";
+import React, { useState } from "react";
 import SmallLoader from "../../../../UI/SmallLoader";
 import urls from "../../../../utils/authURL";
 import { ERROR_DATA } from "../../../../utils/customTypes";
@@ -43,8 +43,16 @@ function RenameDialog({ setOpenSharedFileRename, file }) {
       window.location.reload();
     } catch (error) {
       setIsRenameLoading(false);
-      setError({ isError: true, errorMsg: error?.response?.data.message });
       returnToLoginPage(error);
+
+      if (axios.isAxiosError(error)) {
+        setError({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
 

@@ -26,9 +26,6 @@ function RecipientSection({ file, setIsRenaming }) {
 
   const formattedDate = `${day}/${month}/${year}`;
 
-  const joinedURL = file?.link?.split("upload/")[1].split(".")[0];
-  const mimeType: string = file?.link?.split(".").pop();
-
   async function deleteSharedFile() {
     setIsDeleting(true);
     try {
@@ -41,8 +38,16 @@ function RecipientSection({ file, setIsRenaming }) {
       window.location.assign("/share-file/dashboard");
     } catch (error) {
       setIsDeleting(false);
-      setError({ isError: true, errorMsg: error?.response.data.message });
       returnToLoginPage(error);
+
+      if (axios.isAxiosError(error)) {
+        setError({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
 
@@ -57,8 +62,16 @@ function RecipientSection({ file, setIsRenaming }) {
       window.location.assign("/share-file/dashboard");
     } catch (error) {
       setIsRevoking(false);
-      setErrorBelow({ isError: true, errorMsg: error?.response.data.message });
       returnToLoginPage(error);
+
+      if (axios.isAxiosError(error)) {
+        setErrorBelow({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setErrorBelow({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
 
@@ -87,13 +100,19 @@ function RecipientSection({ file, setIsRenaming }) {
       document.body.removeChild(a);
       setIsDownloading(false);
     } catch (error) {
-      setIsDownloading(false);
-      setError({ isError: true, errorMsg: error?.response.data.message });
       returnToLoginPage(error);
+      setIsDownloading(false);
+
+      if (axios.isAxiosError(error)) {
+        setError({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
-
-  console.log(file);
 
   return (
     <section className="recipient-section">

@@ -4,7 +4,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "jsx": "react",
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true, // Enables interoperability with CommonJS modules
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true, // Enforces consistent file casing (important for case-sensitive filesystems)

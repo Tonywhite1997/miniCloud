@@ -2,18 +2,14 @@ import axios from "axios";
 import React, { ChangeEvent, useState } from "react";
 import SmallLoader from "../../UI/SmallLoader";
 import urls from "../../utils/authURL";
+import { ERROR_DATA } from "../../utils/customTypes";
 import { returnToLoginPage } from "../../utils/generalCommands/ReturnToLoginPage";
-
-interface RENAME_ERROR {
-  isError: boolean;
-  errorMsg: string;
-}
 
 function RenameFile({ renameFileProps }) {
   const { setIsRenamingFile, selectedFile, setFiles, setIsFileOption } =
     renameFileProps;
 
-  const [renameError, setRenameError] = useState<RENAME_ERROR>({
+  const [renameError, setRenameError] = useState<ERROR_DATA>({
     isError: false,
     errorMsg: "",
   });
@@ -59,10 +55,15 @@ function RenameFile({ renameFileProps }) {
     } catch (error) {
       returnToLoginPage(error);
       setIsRenameLoading(false);
-      setRenameError({
-        isError: true,
-        errorMsg: error?.response?.data.message,
-      });
+
+      if (axios.isAxiosError(error)) {
+        setRenameError({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setRenameError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
 

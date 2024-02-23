@@ -1,6 +1,6 @@
 import React from "react";
 import prettyBytes from "pretty-bytes";
-import { FILE } from "../../../../utils/customTypes";
+import { FILE, FileDataType } from "../../../../utils/customTypes";
 
 function FolderFileJSX({ folderFileStructureProps }) {
   const {
@@ -19,13 +19,13 @@ function FolderFileJSX({ folderFileStructureProps }) {
               className="file"
               style={{
                 backgroundColor: multipleFilesSelected.some(
-                  (fileData) => fileData.fileID === file._id
+                  (fileData: FileDataType) => fileData.fileID === file._id
                 )
                   ? "rgb(69, 68, 68)"
                   : "initial",
 
                 color: multipleFilesSelected.some(
-                  (fileData) => fileData.fileID === file._id
+                  (fileData: FileDataType) => fileData.fileID === file._id
                 )
                   ? "white"
                   : "initial",

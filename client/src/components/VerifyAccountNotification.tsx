@@ -26,7 +26,15 @@ function VerifyAccountNotification() {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      setError({ isError: true, errorMsg: error?.response?.data?.message });
+
+      if (axios.isAxiosError(error)) {
+        setError({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
   return (

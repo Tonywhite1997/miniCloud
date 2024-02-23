@@ -45,7 +45,12 @@ function NewFolder({ newFolderProps }) {
       handleCancel();
     } catch (error) {
       returnToLoginPage(error);
-      setFolderErrorMessage(error?.response.data.message);
+
+      if (axios.isAxiosError(error)) {
+        setFolderErrorMessage(error.response?.data.message);
+      } else {
+        setFolderErrorMessage("something occured");
+      }
     }
   }
 
@@ -69,7 +74,11 @@ function NewFolder({ newFolderProps }) {
       } catch (error) {
         returnToLoginPage(error);
 
-        setFolderErrorMessage(error?.response?.data?.message);
+        if (axios.isAxiosError(error)) {
+          setFolderErrorMessage(error.response?.data.message);
+        } else {
+          setFolderErrorMessage("something occured");
+        }
       }
     }
   }

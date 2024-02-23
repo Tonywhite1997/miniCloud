@@ -1,25 +1,56 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, ReactNode, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import urls from "./authURL";
 import Loader from "../UI/Loader";
-import { returnToLoginPage } from "./generalCommands/ReturnToLoginPage";
+import { FILE, FileContextType, USER, UserContextType } from "./customTypes";
 
-export const userContext = createContext({});
-export const fileContext = createContext({});
+const initialUser = {
+  allocatedSpace: 0,
+  usedSpace: 0,
+  _id: "",
+  name: "",
+  email: "",
+  isVerified: false,
+};
+const initialFile = {
+  fileName: "",
+  _id: "",
+  link: "",
+  size: 0,
+  folder: "",
+  mimetype: "",
+};
 
-export const UserProvider = ({ children }) => {
+export const userContext = createContext<UserContextType>({
+  isLoading: false,
+  user: initialUser,
+  setIsLoading: () => {
+    false;
+  },
+  setUser: () => {},
+  isError: false,
+});
+
+export const fileContext = createContext<FileContextType>({
+  fileProviderData: initialFile,
+  setFileProviderData: () => {
+    initialFile;
+  },
+});
+
+interface ChildrenProps {
+  children: ReactNode;
+}
+
+export const UserProvider = ({ children }: ChildrenProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  interface userType {
-    _id?: string;
-  }
-  const [user, setUser] = useState<userType>({});
+  const [user, setUser] = useState<USER>(initialUser);
 
   const persistLogin = async () => {
-    // if (user?._id) return;
     try {
       setIsLoading(true);
       const { data } = await axios.get(`${urls.authURL}/check-if-login`);
@@ -28,13 +59,12 @@ export const UserProvider = ({ children }) => {
     } catch (error) {
       setIsLoading(false);
       setIsError(true);
-      returnToLoginPage(error);
     }
   };
   const location = useLocation();
   let shouldAuthCheckRun =
     !location.pathname.includes("/auth/login") ||
-    location.pathname.includes("/auth/register");
+    !location.pathname.includes("/auth/register");
 
   const { isLoading: queryLoading, isFetching } = useQuery(
     "PERSIST-LOGIN-DATA",
@@ -59,8 +89,8 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-export const FileProvider = ({ children }) => {
-  const [fileProviderData, setFileProviderData] = useState({});
+export const FileProvider = ({ children }: ChildrenProps) => {
+  const [fileProviderData, setFileProviderData] = useState<FILE>(initialFile);
 
   return (
     <fileContext.Provider value={{ fileProviderData, setFileProviderData }}>

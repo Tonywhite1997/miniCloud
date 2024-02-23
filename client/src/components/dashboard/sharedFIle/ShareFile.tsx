@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SmallLoader from "../../../UI/SmallLoader";
 import urls from "../../../utils/authURL";
+import { ERROR_DATA } from "../../../utils/customTypes";
 import { returnToLoginPage } from "../../../utils/generalCommands/ReturnToLoginPage";
 
 interface SHAREDFILEDATA {
@@ -23,13 +24,16 @@ function ShareFile() {
     canDownload: false,
   });
 
-  const [error, setError] = useState({
+  const [error, setError] = useState<ERROR_DATA>({
     isError: false,
     errorMsg: "",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function selectUserActionsToFile(e, name: string) {
+  function selectUserActionsToFile(
+    e: ChangeEvent<HTMLInputElement>,
+    name: string
+  ) {
     setSharedFileData((prevData) => {
       return {
         ...prevData,
@@ -56,7 +60,15 @@ function ShareFile() {
     } catch (error) {
       setIsLoading(false);
       returnToLoginPage(error);
-      setError({ isError: true, errorMsg: error?.response?.data?.message });
+
+      if (axios.isAxiosError(error)) {
+        setError({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
 

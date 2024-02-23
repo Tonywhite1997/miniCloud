@@ -13,6 +13,23 @@ export interface FILE {
   mimetype: string;
 }
 
+export interface UserContextType {
+  user: USER;
+  isLoading: boolean;
+  setUser: Dispatch<SetStateAction<USER>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  isError: boolean;
+}
+export interface FileContextType {
+  fileProviderData: FILE;
+  setFileProviderData: Dispatch<SetStateAction<FILE>>;
+}
+
+export interface FileDataType {
+  fileID: string;
+  fileSize: number;
+}
+
 export interface ERROR {
   response: {
     data: {
@@ -39,14 +56,15 @@ export interface ERROR_DATA {
 export interface USER {
   allocatedSpace: number;
   usedSpace: number;
-  createdAt: Date;
-  _id: string;
+  createdAt?: string;
+  _id?: string;
   name: string;
   email: string;
-  id: string;
+  id?: string;
+  isVerified: boolean;
 }
 
 export interface USER_TYPE {
   user: USER;
-  setUser: Dispatch<SetStateAction<USER_TYPE>>;
+  setUser: Dispatch<SetStateAction<USER>>;
 }

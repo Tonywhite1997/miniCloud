@@ -1,6 +1,12 @@
 import React from "react";
 import prettyBytes from "pretty-bytes";
-import { FILE } from "../../../../utils/customTypes";
+import { FILE, FileDataType } from "../../../../utils/customTypes";
+
+// interface FileStructureProps {
+//   files: FILE;
+//   multipleFilesSelected: boolean;
+//   selectingMultipleFilesToDelete:boolean
+// }
 
 function RootFiles({ fileStructureProps }) {
   const {
@@ -20,13 +26,13 @@ function RootFiles({ fileStructureProps }) {
                 className="file"
                 style={{
                   backgroundColor: multipleFilesSelected.some(
-                    (fileData) => fileData.fileID === file._id
+                    (fileData: FileDataType) => fileData.fileID === file._id
                   )
                     ? "rgb(69, 68, 68)"
                     : "initial",
 
                   color: multipleFilesSelected.some(
-                    (fileData) => fileData.fileID === file._id
+                    (fileData: FileDataType) => fileData.fileID === file._id
                   )
                     ? "white"
                     : "initial",

@@ -11,15 +11,23 @@ import RecipientSection from "./recipient/RecipientSection";
 import Loader from "../../../UI/Loader";
 import RenameDialog from "./recipient/RenameDialog";
 
-RecipientSection;
+// RecipientSection;
+interface SharedFileType {
+  owner: string;
+  recipient: string;
+}
 function SharedFileDetails() {
   const { user } = useContext(userContext);
   const [error, setError] = useState<ERROR_DATA>({
     isError: false,
     errorMsg: "",
   });
+
   const [isRenaming, setIsRenaming] = useState<boolean>(false);
-  const [file, setFile] = useState({});
+  const [file, setFile] = useState<SharedFileType>({
+    owner: "",
+    recipient: "",
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { fileID } = useParams();
 
@@ -33,9 +41,17 @@ function SharedFileDetails() {
         setFile(data.file);
         setIsLoading(false);
       } catch (error) {
-        setIsLoading(false);
-        setError({ isError: true, errorMsg: error?.response?.data.message });
         returnToLoginPage(error);
+        setIsLoading(false);
+
+        if (axios.isAxiosError(error)) {
+          setError({
+            isError: true,
+            errorMsg: error?.response?.data.message,
+          });
+        } else {
+          setError({ isError: true, errorMsg: "something occured" });
+        }
       }
     },
     refetchOnWindowFocus: false,

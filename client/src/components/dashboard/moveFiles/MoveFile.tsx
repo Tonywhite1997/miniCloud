@@ -3,15 +3,12 @@ import React, { useState } from "react";
 import { useMutation } from "react-query";
 import SmallLoader from "../../../UI/SmallLoader";
 import urls from "../../../utils/authURL";
+import { ERROR_DATA } from "../../../utils/customTypes";
 import { returnToLoginPage } from "../../../utils/generalCommands/ReturnToLoginPage";
 
 interface FOLDER {
   name: string;
   _id: string;
-}
-interface ERROR {
-  isError: boolean;
-  message: string;
 }
 
 function MoveFile({ moveFileProps }) {
@@ -30,9 +27,12 @@ function MoveFile({ moveFileProps }) {
   } = moveFileProps;
 
   const [selectedFolder, setSelectedFolder] = useState<string>("");
-  const [error, setError] = useState<ERROR>({ message: "", isError: false });
+  const [error, setError] = useState<ERROR_DATA>({
+    errorMsg: "",
+    isError: false,
+  });
 
-  function changeSelectedFolder(e: React.ChangeEvent<HTMLInputElement>) {
+  function changeSelectedFolder(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedFolder(e.target.value);
   }
 
@@ -64,7 +64,7 @@ function MoveFile({ moveFileProps }) {
     }
 
     if (!currentFolderDetails.id && !targetFolderID) {
-      setError({ message: "select a folder", isError: true });
+      setError({ errorMsg: "select a folder", isError: true });
       return;
     }
 
@@ -83,10 +83,15 @@ function MoveFile({ moveFileProps }) {
       removeMoveFilePopupAndResetFile();
     } catch (error) {
       returnToLoginPage(error);
-      setError({
-        message: error?.response?.data?.message,
-        isError: true,
-      });
+
+      if (axios.isAxiosError(error)) {
+        setError({
+          errorMsg: error?.response?.data?.message,
+          isError: true,
+        });
+      } else {
+        setError({ errorMsg: "something happened", isError: true });
+      }
     }
   }
   async function moveFileToNewFolder() {
@@ -115,7 +120,7 @@ function MoveFile({ moveFileProps }) {
     }
 
     if (!currentFolderDetails.id && !targetFolder?._id) {
-      setError({ message: "select a folder", isError: true });
+      setError({ errorMsg: "select a folder", isError: true });
       return;
     }
 
@@ -130,10 +135,14 @@ function MoveFile({ moveFileProps }) {
       removeMoveFilePopupAndResetFile();
     } catch (error) {
       returnToLoginPage(error);
-      setError({
-        message: error?.response?.data?.message,
-        isError: true,
-      });
+      if (axios.isAxiosError(error)) {
+        setError({
+          errorMsg: error?.response?.data?.message,
+          isError: true,
+        });
+      } else {
+        setError({ errorMsg: "something happened", isError: true });
+      }
     }
   }
 
@@ -175,7 +184,7 @@ function MoveFile({ moveFileProps }) {
               }
             })}
           </select>
-          {error.isError && <p className="error-text">{error.message}</p>}
+          {error.isError && <p className="error-text">{error.errorMsg}</p>}
           <div className="move-buttons">
             <button onClick={removeMoveFilePopupAndResetFile}>Cancel</button>
             <button

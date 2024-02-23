@@ -19,7 +19,14 @@ function Header() {
     try {
       await axios.get(`${urls.authURL}/logout`);
       queryClient.clear();
-      setUser({});
+      setUser({
+        allocatedSpace: 0,
+        usedSpace: 0,
+        _id: "",
+        name: "",
+        email: "",
+        isVerified: false,
+      });
       setIsLoading(false);
       navigate("/auth/login");
     } catch (error) {

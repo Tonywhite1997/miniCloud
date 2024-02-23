@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import ImageViewer from "./fileViewersAndPlayers/ImageViewer";
 import AudioPlayer from "./fileViewersAndPlayers/AudioPlayer";
@@ -44,13 +44,19 @@ function DisplayFilePage() {
     isError: false,
     errorMsg: "",
   });
-  const [file, setFile] = useState<FILE>({});
+
+  const [file, setFile] = useState<FILE>({
+    fileName: "",
+    _id: "",
+    link: "",
+    size: 0,
+    folder: "",
+    mimetype: "",
+  });
 
   const { fileID } = useParams<{ fileID: string }>();
 
   const location = useLocation();
-
-  console.log(location.pathname.includes("share-file"));
 
   useQuery("FILE", {
     queryFn: async () => {
@@ -68,8 +74,16 @@ function DisplayFilePage() {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        setError({ isError: true, errorMsg: error.response.data.message });
         returnToLoginPage(error);
+
+        if (axios.isAxiosError(error)) {
+          setError({
+            isError: true,
+            errorMsg: error?.response?.data.message,
+          });
+        } else {
+          setError({ isError: true, errorMsg: "something occured" });
+        }
       }
     },
     refetchOnWindowFocus: false,

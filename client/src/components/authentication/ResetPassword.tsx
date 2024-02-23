@@ -48,7 +48,12 @@ function ResetPassword() {
       }, 3000);
     } catch (error) {
       setIsLoading(false);
-      setError({ isError: true, errorMsg: error?.response?.data?.message });
+
+      if (axios.isAxiosError(error)) {
+        setError({ isError: true, errorMsg: error?.response?.data?.message });
+      } else {
+        setError({ isError: true, errorMsg: "something occured. try again" });
+      }
     }
     setResetCode("");
   }

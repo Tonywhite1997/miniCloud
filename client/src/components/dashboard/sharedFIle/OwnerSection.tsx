@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import SmallLoader from "../../../UI/SmallLoader";
 import urls from "../../../utils/authURL";
 import { ERROR_DATA } from "../../../utils/customTypes";
@@ -32,7 +32,10 @@ function OwnerSection({ file }) {
 
   const formattedDate = `${day}/${month}/${year}`;
 
-  function editRecipientActions(e, name: string) {
+  function editRecipientActions(
+    e: ChangeEvent<HTMLInputElement>,
+    name: string
+  ) {
     setEditPermissions((prevPermissions) => {
       return { ...prevPermissions, [name]: e.target.checked };
     });
@@ -52,8 +55,13 @@ function OwnerSection({ file }) {
       window.location.assign("/share-file/dashboard");
     } catch (error) {
       setIsEditing(false);
-      setError({ isError: true, errorMsg: error?.response.data.message });
       returnToLoginPage(error);
+
+      if (axios.isAxiosError(error)) {
+        setError({ isError: true, errorMsg: error.response?.data.message });
+      } else {
+        setError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
 
@@ -68,8 +76,16 @@ function OwnerSection({ file }) {
       window.location.assign("/share-file/dashboard");
     } catch (error) {
       setIsRevoking(false);
-      setError({ isError: true, errorMsg: error?.response.data.message });
       returnToLoginPage(error);
+
+      if (axios.isAxiosError(error)) {
+        setError({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
 

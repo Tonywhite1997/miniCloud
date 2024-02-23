@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SmallLoader from "../../UI/SmallLoader";
+import urls from "../../utils/authURL";
 
 function SignUp() {
   const [newUserData, setNewUserData] = useState({
@@ -42,7 +43,7 @@ function SignUp() {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${urls.authURL}/register`,
         formattedName,
         {
           headers: {
@@ -55,7 +56,12 @@ function SignUp() {
       return response;
     } catch (error) {
       setIsLoading(false);
-      setError({ isError: true, errorMsg: error?.response?.data?.message });
+
+      if (axios.isAxiosError(error)) {
+        setError({ isError: true, errorMsg: error?.response?.data?.message });
+      } else {
+        setError({ isError: true, errorMsg: "something occured. try again" });
+      }
     }
   }
 

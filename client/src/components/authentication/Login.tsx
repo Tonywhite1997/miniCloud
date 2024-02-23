@@ -5,14 +5,15 @@ import { Link, useNavigate } from "react-router-dom";
 import urls from "../../utils/authURL";
 import { userContext } from "../../utils/context";
 import SmallLoader from "../../UI/SmallLoader";
-import { ERROR_DATA, ERROR } from "../../utils/customTypes";
+import { ERROR_DATA, UserContextType } from "../../utils/customTypes";
 
 function Login() {
-  const { user, setUser, isLoading, setIsLoading } = useContext(userContext);
+  const { user, setUser, isLoading, setIsLoading } =
+    useContext<UserContextType>(userContext);
 
-  const [errorData, setErrorData] = useState<ERROR_DATA>({
+  const [error, setError] = useState<ERROR_DATA>({
     isError: false,
-    error: "",
+    errorMsg: "",
   });
 
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function Login() {
   }
 
   const handleLogin = async () => {
-    setErrorData({ isError: false, error: "" });
+    setError({ isError: false, errorMsg: "" });
     try {
       setIsLoading(true);
       const response = await axios.post(
@@ -45,21 +46,32 @@ function Login() {
       return response;
     } catch (error) {
       setIsLoading(false);
-      setErrorData({ isError: true, error: error?.response?.data.message });
+
+      if (axios.isAxiosError(error)) {
+        if (error?.response?.data.status === 500) {
+          return setError({
+            isError: true,
+            errorMsg: "something occured. try again",
+          });
+        }
+        setError({ isError: true, errorMsg: error?.response?.data?.message });
+      } else {
+        setError({ isError: true, errorMsg: "something occured. try again" });
+      }
     }
   };
 
   const { data, mutate: login } = useMutation(handleLogin);
 
   useEffect(() => {
-    setUser(data?.data.user);
+    setUser(data && data.data.user);
   }, [setUser, data]);
 
   useEffect(() => {
-    if (user?._id && !errorData.isError) {
+    if (user?._id && !error.isError) {
       navigate("/user/dashboard");
     }
-  }, [user?._id, navigate, errorData.isError]);
+  }, [user?._id, navigate, error.isError]);
 
   return (
     <section className="login-section">
@@ -90,7 +102,7 @@ function Login() {
             onChange={getUserLoginData}
           />
         </div>
-        {errorData.isError && <p className="login-error">{errorData.error}</p>}
+        {error.isError && <p className="login-error">{error.errorMsg}</p>}
         <div className="button">
           <button>{isLoading ? <SmallLoader /> : "Login"}</button>
         </div>

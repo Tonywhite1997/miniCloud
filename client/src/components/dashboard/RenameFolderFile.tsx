@@ -66,10 +66,15 @@ function RenameFolderFile({ renameFolderFileProps }) {
     } catch (error) {
       returnToLoginPage(error);
       setIsRenameLoading(false);
-      setRenameError({
-        isError: true,
-        errorMsg: error?.response?.data.message,
-      });
+
+      if (axios.isAxiosError(error)) {
+        setRenameError({
+          isError: true,
+          errorMsg: error?.response?.data.message,
+        });
+      } else {
+        setRenameError({ isError: true, errorMsg: "something occured" });
+      }
     }
   }
 
