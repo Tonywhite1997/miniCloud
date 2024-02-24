@@ -6,10 +6,13 @@ import {
   GetObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
-import { fromIni } from "@aws-sdk/credential-provider-ini";
 
 const s3 = new S3Client({
-  credentials: fromIni({ profile: "default" }),
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+  region: process.env.AWS_REGION,
 });
 
 exports.S3Upload = async (file) => {
