@@ -31,7 +31,7 @@ function App() {
 
               <Route path="/auth/register" element={<SignUp />} />
 
-              <Route path="auth/login" element={<Login />} />
+              <Route path="/auth/login" element={<Login />} />
 
               <Route
                 path="/auth/verify-account"

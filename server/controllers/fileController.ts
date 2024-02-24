@@ -90,10 +90,9 @@ exports.saveFile = catchAsync(
         files,
       });
     } catch (error) {
-      console.log(error);
-
       if (S3UploadSuccessfully) {
         await awsActions.S3DeleteObject(S3ObjectKey);
+      } else {
         return next(new AppError("Error: Try again later", 500));
       }
     }
@@ -271,7 +270,7 @@ exports.deleteFile = catchAsync(
         files,
       });
     } catch (error) {
-      console.log(error);
+      return next(new AppError("An error occured. Try again", 500));
     }
   }
 );
