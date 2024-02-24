@@ -26,15 +26,3 @@ if (url) {
     })
     .catch((error) => console.log("error", error));
 }
-
-// Drop the unique index on the 'name' field in the 'folders' collection
-// Folder.collection.dropIndex({ name: 1 }, (err, result) => {
-//     if (err) {
-//         console.error('Error dropping index:', err);
-//     } else {
-//         console.log('Index dropped successfully:', result);
-//     }
-
-//     // Close the MongoDB connection
-//     mongoose.connection.close();
-// });

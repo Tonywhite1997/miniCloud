@@ -38,7 +38,7 @@ function Header() {
   return (
     <header className="header">
       <div className="header-logo">
-        <Link to="/auth/login" className="logo-link">
+        <Link to="/user/dashboard" className="logo-link">
           <CloudIcon />
           <p>MiniCloud</p>
         </Link>

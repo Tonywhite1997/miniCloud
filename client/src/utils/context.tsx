@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import urls from "./authURL";
 import Loader from "../UI/Loader";
 import { FILE, FileContextType, USER, UserContextType } from "./customTypes";
+import { returnToLoginPage } from "./generalCommands/ReturnToLoginPage";
 
 const initialUser = {
   allocatedSpace: 0,
@@ -51,17 +52,19 @@ export const UserProvider = ({ children }: ChildrenProps) => {
   const [user, setUser] = useState<USER>(initialUser);
 
   const persistLogin = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const { data } = await axios.get(`${urls.authURL}/check-if-login`);
       setUser(data?.user);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setIsError(true);
+      returnToLoginPage(error);
     }
   };
   const location = useLocation();
+
   let shouldAuthCheckRun =
     !location.pathname.includes("/auth/login") ||
     !location.pathname.includes("/auth/register");

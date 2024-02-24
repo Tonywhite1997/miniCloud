@@ -9,7 +9,7 @@ import OpenNavIcon from "../../assets/OpenNavIcon";
 import CancelIcon from "../../assets/CancelIcon";
 
 function UserDashboard() {
-  const { user, isLoading } = useContext(userContext);
+  const { user } = useContext(userContext);
   const [currentNav, setCurrentNav] = useState<number>(0);
   const [isnavOpen, setIsNavOpen] = useState<boolean>(false);
   const [clientWidth, setClientWidth] = useState<number>(window.innerWidth);
@@ -25,14 +25,15 @@ function UserDashboard() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!user?._id && !isLoading) {
-      window.location.assign("/auth/login");
-    }
-  }, [user, isLoading]);
+  // useEffect(() => {
+  //   if (!isLoading && !user?._id) {
+  //     window.location.assign("/auth/login");
+  //   }
+  // }, [user?._id, isLoading]);
 
   const isVerified = user?.isVerified || false;
 
+  // if (!user._id)
   return (
     <main className="dashboard">
       {user?._id && !isVerified && <VerifyAccountNotification />}

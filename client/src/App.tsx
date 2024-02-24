@@ -27,11 +27,11 @@ function App() {
           <FileProvider>
             <Header />
             <Routes>
-              <Route path="/" element={<SignUp />} />
+              <Route path="/" element={<Login />} />
 
               <Route path="/auth/register" element={<SignUp />} />
 
-              <Route path="/auth/login" element={<Login />} />
+              <Route path="auth/login" element={<Login />} />
 
               <Route
                 path="/auth/verify-account"

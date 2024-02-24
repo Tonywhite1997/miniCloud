@@ -19,9 +19,7 @@ import { verifyAccount } from "../email/verify-email";
 dotenv.config();
 
 const getJWTToken = (user_id: string): string => {
-  const token = JWT.sign({ user_id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+  const token = JWT.sign({ user_id }, process.env.JWT_SECRET);
   return token;
 };
 
@@ -29,14 +27,14 @@ interface cookieType {
   httpOnly: boolean;
   maxAge: number;
   secure: boolean;
-  sameSite: boolean | "lax" | "strict" | "none";
+  sameSite: "lax" | "none";
 }
 
 const cookieOptions: cookieType = {
-  httpOnly: true,
-  sameSite: "strict",
-  secure: process.env.NODE_ENV === "production",
-  maxAge: 90 * 24 * 60 * 60 * 1000,
+  httpOnly: process.env.NODE_ENV === "production" ? true : false,
+  sameSite: process.env.NODE_ENV === "production" ? "lax" : "none",
+  secure: process.env.NODE_ENV === "production" ? true : false,
+  maxAge: 1 * 60 * 60 * 1000,
 };
 
 interface IUSER {
@@ -63,7 +61,10 @@ exports.register = catchAsync(
 
     const newUser = await User.create({ name, email, password });
 
-    const link = "http://localhost:5173/auth/login";
+    const link =
+      process.env.NODE_ENV === "production"
+        ? "https://miniycloud.netlify.app/auth/login"
+        : "http://localhost:5173/auth/login";
 
     await welcomeMessage(newUser.email, link, newUser.name);
 
@@ -162,7 +163,10 @@ exports.confirmVerificationCode = catchAsync(
       { new: true }
     );
 
-    const link = "http://localhost:5173/auth/login";
+    const link =
+      process.env.NODE_ENV === "production"
+        ? "https://miniycloud.netlify.app/auth/login"
+        : "http://localhost:5173/auth/login";
 
     await emailVerificationSuccessEmail(user.email, link);
 
@@ -374,7 +378,10 @@ exports.resetPassword = catchAsync(
       return next(new AppError("code expired. try again with new code", 401));
     }
 
-    const link = "http://localhost:5173/auth/login";
+    const link =
+      process.env.NODE_ENV === "production"
+        ? "https://miniycloud.netlify.app/auth/login"
+        : "http://localhost:5173/auth/login";
 
     user.password = newPassword;
     user.resetCode = undefined;
@@ -459,9 +466,9 @@ exports.deleteAccount = catchAsync(
 exports.logout = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const cookieOptions: cookieType = {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: process.env.NODE_ENV === "production" ? true : false,
+      sameSite: process.env.NODE_ENV === "production" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "production" ? true : false,
       maxAge: 100,
     };
     if (process.env.NODE_ENV === "production") cookieOptions.secure = true;

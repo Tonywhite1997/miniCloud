@@ -15,8 +15,13 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    // origin: "http://localhost:5173",
-    origin: "https://miniycloud.netlify.app",
+    origin: ["http://localhost:5173", "https://miniycloud.netlify.app"],
+    methods: ["GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: [
+      "Access-Control-Allow-Origin",
+      "Authorization",
+      "Content-Type",
+    ],
   })
 );
 
