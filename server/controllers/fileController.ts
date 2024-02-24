@@ -14,7 +14,6 @@ exports.verifyAvailableSpace = catchAsync(
     const { fileSize } = req.body;
 
     if (!fileSize) return next(new AppError("select a file", 401));
-    console.log(fileSize);
 
     const currentUsedSpace: number = usedSpace + fileSize;
 
@@ -91,6 +90,8 @@ exports.saveFile = catchAsync(
         files,
       });
     } catch (error) {
+      console.log(error);
+
       if (S3UploadSuccessfully) {
         await awsActions.S3DeleteObject(S3ObjectKey);
         return next(new AppError("Error: Try again later", 500));
@@ -250,24 +251,28 @@ exports.deleteFile = catchAsync(
     const file = await File.findById(objectID);
     if (!file) return next(new AppError("file not found", 404));
 
-    const AWSresult = await awsActions.S3DeleteObject(file.key);
+    try {
+      const AWSresult = await awsActions.S3DeleteObject(file.key);
 
-    if (!AWSresult) return next(new AppError("Error. Try again later", 500));
+      if (!AWSresult) return next(new AppError("Error. Try again later", 500));
 
-    await File.deleteOne({ _id: file._id });
+      await File.deleteOne({ _id: file._id });
 
-    let files: FILEBODY;
+      let files: FILEBODY;
 
-    if (folderID) {
-      files = await File.find({ folder: folderID, user: req.user._id });
-    } else {
-      files = await File.find({ folder: null, user: req.user._id });
+      if (folderID) {
+        files = await File.find({ folder: folderID, user: req.user._id });
+      } else {
+        files = await File.find({ folder: null, user: req.user._id });
+      }
+
+      res.status(201).json({
+        status: "ok",
+        files,
+      });
+    } catch (error) {
+      console.log(error);
     }
-
-    res.status(201).json({
-      status: "ok",
-      files,
-    });
   }
 );
 
